@@ -1,9 +1,9 @@
 const mainService = require("../service/main.service");
 const boardService = require("../service/board.service");
 
-exports.getWrite = (req, res) => {
+exports.getWrite = async (req, res) => {
   try {
-    const result = mainService.selectUserUid();
+    const result = await mainService.selectUserUid();
     if (!result) {
       return res.redirect("/?error=로그인이 필요합니다.");
     }
@@ -14,10 +14,10 @@ exports.getWrite = (req, res) => {
     next(error);
   }
 };
-exports.postWrite = (req, res) => {
+exports.postWrite = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const result = boardService.createBoard(title, content);
+    const result = await boardService.createBoard(title, content);
     if (!result) {
       return res.redirect("/boards/write?error=내용을 작성해주세요.");
     }
@@ -27,13 +27,13 @@ exports.postWrite = (req, res) => {
   }
 };
 
-exports.getRead = (req, res) => {
+exports.getRead = async (req, res) => {
   try {
-    const boardResult = boardService.selectBoard(req.query.id);
+    const boardResult = await boardService.selectBoard(req.query.id);
     if (!boardResult) {
       return res.redirect("/?error=존재하지 않는 글입니다.");
     }
-    const commentsResult = boardService.selectComments(req.query.id);
+    const commentsResult = await boardService.selectComments(req.query.id);
     res.render("board/read.html", {
       error: req.query.error,
       board: boardResult,
@@ -44,9 +44,9 @@ exports.getRead = (req, res) => {
   }
 };
 
-exports.getGood = (req, res) => {
+exports.getGood = async (req, res) => {
   try {
-    const result = boardService.createGood(req.query.id);
+    const result = await boardService.createGood(req.query.id);
     if (!result) {
       return res.redirect("/?error=존재하지 않는 글입니다.");
     }
@@ -56,9 +56,9 @@ exports.getGood = (req, res) => {
   }
 };
 
-exports.getFollowing = (req, res) => {
+exports.getFollowing = async (req, res) => {
   try {
-    const result = boardService.createFollowing(req.query.id);
+    const result = await boardService.createFollowing(req.query.id);
     if (!result) {
       return res.redirect("/?error=존재하지 않는 글입니다.");
     }
@@ -68,9 +68,9 @@ exports.getFollowing = (req, res) => {
   }
 };
 
-exports.getUnfollowing = (req, res) => {
+exports.getUnfollowing = async (req, res) => {
   try {
-    const result = boardService.deleteFollowing(req.query.id);
+    const result = await boardService.deleteFollowing(req.query.id);
     if (!result) {
       return res.redirect("/?error=존재하지 않는 글입니다.");
     }
@@ -80,9 +80,9 @@ exports.getUnfollowing = (req, res) => {
   }
 };
 
-exports.getModify = (req, res) => {
+exports.getModify = async (req, res) => {
   try {
-    const result = boardService.selectBoard(req.query.id);
+    const result = await boardService.selectBoard(req.query.id);
     if (!result) {
       return res.redirect("/?error=존재하지 않는 글입니다.");
     }
@@ -96,10 +96,10 @@ exports.getModify = (req, res) => {
     next(error);
   }
 };
-exports.postModify = (req, res) => {
+exports.postModify = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const result = boardService.updateBoard(req.query.id, title, content);
+    const result = await boardService.updateBoard(req.query.id, title, content);
     if (!result) {
       return res.redirect(
         `/boards/modify?id=${req.query.id}&error=내용을 작성해주세요.`
@@ -111,9 +111,9 @@ exports.postModify = (req, res) => {
   }
 };
 
-exports.getDelete = (req, res) => {
+exports.getDelete = async (req, res) => {
   try {
-    const result = boardService.deleteBoard(req.query.id);
+    const result = await boardService.deleteBoard(req.query.id);
     if (!result) {
       res.redirect(`/boards/read?id=${req.query.id}&error=잘못된 접근입니다.`);
     }
@@ -123,9 +123,9 @@ exports.getDelete = (req, res) => {
   }
 };
 
-exports.postComment = (req, res) => {
+exports.postComment = async (req, res) => {
   try {
-    const result = boardService.createComment(req.query.id);
+    const result = await boardService.createComment(req.query.id);
     if (!result) {
       return res.redirect(
         `boards/read?id=${req.query.id}&error=로그인이 필요합니다.`
