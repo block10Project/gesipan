@@ -88,6 +88,9 @@ exports.getModify = (req, res) => {
     }
     res.render("board/modify.html", {
       error: req.query.error,
+      board: {
+        uid: req.query.id,
+      },
     });
   } catch (error) {
     next(error);
