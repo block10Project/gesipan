@@ -1,42 +1,125 @@
 const userService = require("../service/user.service");
 
 exports.getLogin = (req, res) => {
-  res.render("user/login.html");
+  try {
+    res.render("user/login.html", {
+      error: req.query.error,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 exports.postLogin = (req, res) => {
-  res.redirect("/");
+  try {
+    const { id, pw } = req.body;
+    const result = userService.selectUser(id, pw);
+    if (!result) {
+      return res.redirect("/login?error=계정 정보가 일치하지 않습니다.");
+    }
+    res.redirect("/");
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getRegister = (req, res) => {
-  res.render("user/register.html");
+  try {
+    res.render("user/register.html", {
+      error: req.query.error,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 exports.postRegister = (req, res) => {
-  res.redirect("/users/login");
+  try {
+    const { nickname, id, pw } = req.body;
+    const result = userService.createUser(nickname, id, pw);
+    if (!result) {
+      return res.redirect("/users/register?error=이미 존재하는 ID입니다.");
+    }
+    res.redirect("/users/login");
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getPassword = (req, res) => {
-  res.render("user/password.html");
+  try {
+    res.render("user/password.html", {
+      error: req.query.error,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 exports.postPassword = (req, res) => {
-  res.redirect("/users/login");
+  try {
+    const { nickname, id, newPw } = req.body;
+    const result = userService.updateUser(nickname, id, newPw);
+    if (!result) {
+      return res.redirect(
+        "/users/password?error=계정 정보가 일치하지 않습니다."
+      );
+    }
+    res.redirect("/users/login");
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getInfo = (req, res) => {
-  res.render("user/info.html");
+  try {
+    const result = userService.selectUserWhereId(req.query.id);
+    if (!result) {
+      return res.redirect("/?error=존재하지 않는 계정입니다.");
+    }
+    res.render("user/info.html", {
+      user: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getFollowing = (req, res) => {
-  res.render("user/following.html");
+  try {
+    const result = userService.selectFollowings(req.query.id);
+    res.render("user/following.html", {
+      followings: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getFollower = (req, res) => {
-  res.render("user/follwer.html");
+  try {
+    const result = userService.selectFollowers(req.query.id);
+    res.render("user/follwer.html", {
+      followers: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getList = (req, res) => {
-  res.render("user/list.html");
+  try {
+    const result = userService.selectBoards(req.query.id);
+    res.render("user/list.html", {
+      boards: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getLogout = (req, res) => {
-  res.redirect("/");
+  try {
+    res.clearCookie("token");
+    res.redirect("/");
+  } catch (error) {
+    next(error);
+  }
 };
