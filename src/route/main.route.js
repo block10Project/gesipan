@@ -12,3 +12,5 @@ router.post("/search", (req, res) => {
 router.get("/search", (req, res) => {
   res.render("search.html", mainController.getSearch);
 });
+
+module.exports = router;

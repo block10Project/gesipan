@@ -19,3 +19,5 @@ router.post("/modify", boardController.postModify);
 router.get("/delete", boardController.getDelete);
 
 router.post("/comment", boardController.postComment);
+
+module.exports = router;
