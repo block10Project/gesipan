@@ -3,18 +3,18 @@ const userService = require("../service/user.service");
 exports.getLogin = (req, res) => {
   try {
     res.render("user/login.html", {
-      error: req.query.error,
+      message: req.query.message,
     });
   } catch (error) {
     next(error);
   }
 };
-exports.postLogin = (req, res) => {
+exports.postLogin = async (req, res) => {
   try {
     const { id, pw } = req.body;
-    const result = userService.selectUser(id, pw);
+    const result = await userService.selectUser(id, pw);
     if (!result.isLogin) {
-      return res.redirect("/login?error=계정 정보가 일치하지 않습니다.");
+      return res.redirect("/login?message=계정 정보가 일치하지 않습니다.");
     }
     res.cookie(
       "token",
@@ -32,18 +32,18 @@ exports.postLogin = (req, res) => {
 exports.getRegister = (req, res) => {
   try {
     res.render("user/register.html", {
-      error: req.query.error,
+      message: req.query.message,
     });
   } catch (error) {
     next(error);
   }
 };
-exports.postRegister = (req, res) => {
+exports.postRegister = async (req, res) => {
   try {
     const { nickname, id, pw } = req.body;
-    const result = userService.createUser(nickname, id, pw);
+    const result = await userService.createUser(nickname, id, pw);
     if (!result) {
-      return res.redirect("/users/register?error=이미 존재하는 ID입니다.");
+      return res.redirect("/users/register?message=이미 존재하는 ID입니다.");
     }
     res.redirect("/users/login");
   } catch (error) {
@@ -54,19 +54,19 @@ exports.postRegister = (req, res) => {
 exports.getPassword = (req, res) => {
   try {
     res.render("user/password.html", {
-      error: req.query.error,
+      message: req.query.message,
     });
   } catch (error) {
     next(error);
   }
 };
-exports.postPassword = (req, res) => {
+exports.postPassword = async (req, res) => {
   try {
     const { nickname, id, newPw } = req.body;
-    const result = userService.updateUser(nickname, id, newPw);
+    const result = await userService.updateUser(nickname, id, newPw);
     if (!result) {
       return res.redirect(
-        "/users/password?error=계정 정보가 일치하지 않습니다."
+        "/users/password?message=계정 정보가 일치하지 않습니다."
       );
     }
     res.redirect("/users/login");
@@ -75,11 +75,11 @@ exports.postPassword = (req, res) => {
   }
 };
 
-exports.getInfo = (req, res) => {
+exports.getInfo = async (req, res) => {
   try {
-    const result = userService.selectUserWhereId(req.query.id);
+    const result = await userService.selectUserWhereId(req.query.id);
     if (!result) {
-      return res.redirect("/?error=존재하지 않는 계정입니다.");
+      return res.redirect("/?message=존재하지 않는 계정입니다.");
     }
     res.render("user/info.html", {
       user: result,
@@ -89,9 +89,9 @@ exports.getInfo = (req, res) => {
   }
 };
 
-exports.getFollowing = (req, res) => {
+exports.getFollowing = async (req, res) => {
   try {
-    const result = userService.selectFollowings(req.query.id);
+    const result = await userService.selectFollowings(req.query.id);
     res.render("user/following.html", {
       followings: result,
     });
@@ -100,9 +100,9 @@ exports.getFollowing = (req, res) => {
   }
 };
 
-exports.getFollower = (req, res) => {
+exports.getFollower = async (req, res) => {
   try {
-    const result = userService.selectFollowers(req.query.id);
+    const result = await userService.selectFollowers(req.query.id);
     res.render("user/follwer.html", {
       followers: result,
     });
@@ -111,9 +111,9 @@ exports.getFollower = (req, res) => {
   }
 };
 
-exports.getList = (req, res) => {
+exports.getList = async (req, res) => {
   try {
-    const result = userService.selectBoards(req.query.id);
+    const result = await userService.selectBoards(req.query.id);
     res.render("user/list.html", {
       boards: result,
     });

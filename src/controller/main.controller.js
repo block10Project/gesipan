@@ -1,11 +1,11 @@
 const mainService = require("../service/main.service");
 
-exports.getList = (req, res) => {
+exports.getList = async (req, res) => {
   try {
-    const uidResult = mainService.selectUserUid();
-    const boardsResult = mainService.selectBoards();
+    const uidResult = await mainService.selectUserUid();
+    const boardsResult = await mainService.selectBoards();
     res.render("index.html", {
-      error: req.query.error,
+      message: req.query.message,
       user: {
         uid: uidResult,
       },
@@ -23,11 +23,11 @@ exports.postSearch = (req, res) => {
     next(error);
   }
 };
-exports.getSearch = (req, res) => {
+exports.getSearch = async (req, res) => {
   try {
-    const result = mainService.selectBoards(keyword);
+    const result = await mainService.selectBoards(keyword);
     if (!result) {
-      return res.redirect("/?error=검색 결과가 존재하지 않습니다.");
+      return res.redirect("/?message=검색 결과가 존재하지 않습니다.");
     }
     res.render("search.html", {
       keyword: req.query.keyword,
