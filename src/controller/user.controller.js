@@ -13,9 +13,16 @@ exports.postLogin = (req, res) => {
   try {
     const { id, pw } = req.body;
     const result = userService.selectUser(id, pw);
-    if (!result) {
+    if (!result.isLogin) {
       return res.redirect("/login?error=계정 정보가 일치하지 않습니다.");
     }
+    res.cookie(
+      "token",
+      result.data,
+      (maxAge = 600),
+      (domain = "localhost"),
+      (path = "/")
+    );
     res.redirect("/");
   } catch (error) {
     next(error);
