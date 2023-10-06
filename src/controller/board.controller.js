@@ -33,9 +33,16 @@ exports.getRead = async (req, res) => {
     if (!boardResult) {
       return res.redirect("/?message=존재하지 않는 글입니다.");
     }
+    const userFollowingsResult = await mainService.selectUserFollowings();
+    if (!userFollowingsResult) {
+      return res.redirect("/?message=로그인이 필요합니다.");
+    }
     const commentsResult = await boardService.selectComments(req.query.id);
     res.render("board/read.html", {
       message: req.query.message,
+      user: {
+        followings: userFollowingsResult,
+      },
       board: boardResult,
       comments: commentsResult,
     });
@@ -60,7 +67,7 @@ exports.getFollowing = async (req, res) => {
   try {
     const result = await boardService.createFollowing(req.query.id);
     if (!result) {
-      return res.redirect("/?message=존재하지 않는 글입니다.");
+      return res.redirect("/?message=존재하지 않는 사용자입니다.");
     }
     res.redirect(`/boards/read?id=${req.query.id}&message=${result}`);
   } catch (error) {
@@ -72,7 +79,7 @@ exports.getUnfollowing = async (req, res) => {
   try {
     const result = await boardService.deleteFollowing(req.query.id);
     if (!result) {
-      return res.redirect("/?message=존재하지 않는 글입니다.");
+      return res.redirect("/?message=존재하지 않는 사용자입니다.");
     }
     res.redirect(`/boards/read?id=${req.query.id}&message=${result}`);
   } catch (error) {
@@ -102,10 +109,10 @@ exports.postModify = async (req, res) => {
     const result = await boardService.updateBoard(req.query.id, title, content);
     if (!result) {
       return res.redirect(
-        `/boards/modify?id=${req.query.id}&message=내용을 작성해주세요.`
+        `/boards/modify?id=${req.query.id}&message=잘못된 접근입니다.`
       );
     }
-    res.redirect(`/boards/read?id=${req.query.id}`);
+    res.redirect(`/boards/read?id=${req.query.id}&message=${result}`);
   } catch (error) {
     next(error);
   }
@@ -119,7 +126,7 @@ exports.getDelete = async (req, res) => {
         `/boards/read?id=${req.query.id}&message=잘못된 접근입니다.`
       );
     }
-    res.redirect("/");
+    res.redirect(`/?message=${result}`);
   } catch (error) {
     next(error);
   }
@@ -127,7 +134,10 @@ exports.getDelete = async (req, res) => {
 
 exports.postComment = async (req, res) => {
   try {
-    const result = await boardService.createComment(req.query.id);
+    const result = await boardService.createComment(
+      req.query.id,
+      req.body.comment
+    );
     if (!result) {
       return res.redirect(
         `boards/read?id=${req.query.id}&message=로그인이 필요합니다.`
