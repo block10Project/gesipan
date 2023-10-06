@@ -5,7 +5,7 @@ exports.getList = async (req, res) => {
     const uidResult = await mainService.selectUserUid();
     const boardsResult = await mainService.selectBoards();
     res.render("index.html", {
-      error: req.query.error,
+      message: req.query.message,
       user: {
         uid: uidResult,
       },
@@ -27,7 +27,7 @@ exports.getSearch = async (req, res) => {
   try {
     const result = await mainService.selectBoards(keyword);
     if (!result) {
-      return res.redirect("/?error=검색 결과가 존재하지 않습니다.");
+      return res.redirect("/?message=검색 결과가 존재하지 않습니다.");
     }
     res.render("search.html", {
       keyword: req.query.keyword,

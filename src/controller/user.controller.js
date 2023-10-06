@@ -3,7 +3,7 @@ const userService = require("../service/user.service");
 exports.getLogin = (req, res) => {
   try {
     res.render("user/login.html", {
-      error: req.query.error,
+      message: req.query.message,
     });
   } catch (error) {
     next(error);
@@ -14,7 +14,7 @@ exports.postLogin = async (req, res) => {
     const { id, pw } = req.body;
     const result = await userService.selectUser(id, pw);
     if (!result.isLogin) {
-      return res.redirect("/login?error=계정 정보가 일치하지 않습니다.");
+      return res.redirect("/login?message=계정 정보가 일치하지 않습니다.");
     }
     res.cookie(
       "token",
@@ -32,7 +32,7 @@ exports.postLogin = async (req, res) => {
 exports.getRegister = (req, res) => {
   try {
     res.render("user/register.html", {
-      error: req.query.error,
+      message: req.query.message,
     });
   } catch (error) {
     next(error);
@@ -43,7 +43,7 @@ exports.postRegister = async (req, res) => {
     const { nickname, id, pw } = req.body;
     const result = await userService.createUser(nickname, id, pw);
     if (!result) {
-      return res.redirect("/users/register?error=이미 존재하는 ID입니다.");
+      return res.redirect("/users/register?message=이미 존재하는 ID입니다.");
     }
     res.redirect("/users/login");
   } catch (error) {
@@ -54,7 +54,7 @@ exports.postRegister = async (req, res) => {
 exports.getPassword = (req, res) => {
   try {
     res.render("user/password.html", {
-      error: req.query.error,
+      message: req.query.message,
     });
   } catch (error) {
     next(error);
@@ -66,7 +66,7 @@ exports.postPassword = async (req, res) => {
     const result = await userService.updateUser(nickname, id, newPw);
     if (!result) {
       return res.redirect(
-        "/users/password?error=계정 정보가 일치하지 않습니다."
+        "/users/password?message=계정 정보가 일치하지 않습니다."
       );
     }
     res.redirect("/users/login");
@@ -79,7 +79,7 @@ exports.getInfo = async (req, res) => {
   try {
     const result = await userService.selectUserWhereId(req.query.id);
     if (!result) {
-      return res.redirect("/?error=존재하지 않는 계정입니다.");
+      return res.redirect("/?message=존재하지 않는 계정입니다.");
     }
     res.render("user/info.html", {
       user: result,
