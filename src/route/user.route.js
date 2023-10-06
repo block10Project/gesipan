@@ -20,3 +20,5 @@ router.get("/follower", userController.getFollower);
 router.get("/list", userController.getList);
 
 router.get("/logout", userController.getLogout);
+
+module.exports = router;
