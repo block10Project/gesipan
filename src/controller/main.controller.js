@@ -5,6 +5,7 @@ exports.getList = (req, res) => {
     const uidResult = mainService.selectUserUid();
     const boardsResult = mainService.selectBoards();
     res.render("index.html", {
+      error: req.query.error,
       user: {
         uid: uidResult,
       },
