@@ -4,8 +4,8 @@ const jwt = new JWT();
 
 exports.selectUserUid = async (req, res) => {
   try {
-    const result = jwt.verity(req.cookies, "subin");
-    return await mainRepository.selectUserUid(result);
+    const payload = jwt.verify(req.cookies, "subin");
+    return await mainRepository.selectUserUid(payload.id);
   } catch (error) {
     throw new Error("selectUserUid error: ", error.message);
   }
