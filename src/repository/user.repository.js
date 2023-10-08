@@ -70,9 +70,9 @@ exports.selectFollowings = async (id) => {
     select uid, nickname 
     from users 
     where uid = any (
-        select following_user_uid 
-        from followings 
-        where user_uid = ?
+        select followed_user_uid 
+        from follows 
+        where following_user_uid = ?
     )`;
     const [result] = await pool.query(sql, [id]);
     return result;
@@ -87,9 +87,9 @@ exports.selectFollowers = async (id) => {
     select uid, nickname 
     from users 
     where uid = any (
-        select follower_user_uid 
-        from followers 
-        where user_uid = ?
+        select following_user_uid 
+        from follows 
+        where followed_user_uid = ?
     )`;
     const [result] = await pool.query(sql, [id]);
     return result;
@@ -115,10 +115,10 @@ exports.selectBoards = async (id) => {
 exports.selectUserFollowings = async (id) => {
   try {
     const sql = `
-    select count(following_user_uid) 
-    from followings 
-    group by user_uid 
-    having user_uid = ?
+    select count(followed_user_uid) 
+    from follows 
+    group by following_user_uid 
+    having following_user_uid = ?
     `;
     const [[result]] = await pool.query(sql, [id]);
     return result;
@@ -130,10 +130,10 @@ exports.selectUserFollowings = async (id) => {
 exports.selectUserFollowers = async (id) => {
   try {
     const sql = `
-      select count(follower_user_uid) 
-      from followers 
-      group by user_uid 
-      having user_uid = ?
+      select count(following_user_uid) 
+      from follows 
+      group by followed_user_uid 
+      having followed_user_uid = ?
       `;
     const [[result]] = await pool.query(sql, [id]);
     return result;
