@@ -13,10 +13,18 @@ exports.selectUserUid = async (req, res) => {
 
 exports.selectBoards = async (req, res) => {
   try {
-    if (req.query.keyword) {
-      return await mainRepository.selectBoardsWhereKeyword(req.query.keyword);
+    if (!req.query.id) {
+      req.query.id = 1;
+    } else {
+      req.query.id = Number(req.query.id);
     }
-    return await mainRepository.selectBoards();
+    if (req.query.keyword) {
+      return await mainRepository.selectBoardsWhereKeyword(
+        req.query.keyword,
+        req.query.id
+      );
+    }
+    return await mainRepository.selectBoards(req.query.id);
   } catch (error) {
     throw new Error("selectBoards error: ", error.message);
   }
