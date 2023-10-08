@@ -17,7 +17,8 @@ exports.getWrite = async (req, res) => {
 exports.postWrite = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const result = await boardService.createBoard(title, content);
+    const userUid = await mainService.selectUserUid();
+    const result = await boardService.createBoard(title, content, userUid);
     if (!result) {
       return res.redirect("/boards/write?message=내용을 작성해주세요.");
     }
@@ -46,7 +47,8 @@ exports.getRead = async (req, res) => {
 
 exports.getGood = async (req, res) => {
   try {
-    const result = await boardService.createGood(req.query.id);
+    const userUid = await mainService.selectUserUid();
+    const result = await boardService.createGood(req.query.id, userUid);
     if (!result) {
       return res.redirect("/?message=존재하지 않는 글입니다.");
     }
@@ -58,7 +60,8 @@ exports.getGood = async (req, res) => {
 
 exports.getFollowing = async (req, res) => {
   try {
-    const result = await boardService.createFollowing(req.query.id);
+    const userUid = await mainService.selectUserUid();
+    const result = await boardService.createFollow(req.query.id, userUid);
     if (!result) {
       return res.redirect("/?message=존재하지 않는 사용자입니다.");
     }
@@ -70,7 +73,8 @@ exports.getFollowing = async (req, res) => {
 
 exports.getUnfollowing = async (req, res) => {
   try {
-    const result = await boardService.deleteFollowing(req.query.id);
+    const userUid = await mainService.selectUserUid();
+    const result = await boardService.deleteFollow(req.query.id, userUid);
     if (!result) {
       return res.redirect("/?message=존재하지 않는 사용자입니다.");
     }
@@ -99,7 +103,13 @@ exports.getModify = async (req, res) => {
 exports.postModify = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const result = await boardService.updateBoard(req.query.id, title, content);
+    const userUid = await mainService.selectUserUid();
+    const result = await boardService.updateBoard(
+      req.query.id,
+      title,
+      content,
+      userUid
+    );
     if (!result) {
       return res.redirect(
         `/boards/modify?id=${req.query.id}&message=잘못된 접근입니다.`
@@ -113,7 +123,8 @@ exports.postModify = async (req, res) => {
 
 exports.getDelete = async (req, res) => {
   try {
-    const result = await boardService.deleteBoard(req.query.id);
+    const userUid = await mainService.selectUserUid();
+    const result = await boardService.deleteBoard(req.query.id, userUid);
     if (!result) {
       res.redirect(
         `/boards/read?id=${req.query.id}&message=잘못된 접근입니다.`
@@ -127,8 +138,10 @@ exports.getDelete = async (req, res) => {
 
 exports.postComment = async (req, res) => {
   try {
+    const userUid = await mainService.selectUserUid();
     const result = await boardService.createComment(
       req.query.id,
+      userUid,
       req.body.comment
     );
     if (!result) {
