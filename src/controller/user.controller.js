@@ -103,7 +103,7 @@ exports.getFollowing = async (req, res, next) => {
 exports.getFollower = async (req, res, next) => {
   try {
     const result = await userService.selectFollowers(req.query.id);
-    res.render("user/follwer.html", {
+    res.render("user/follower.html", {
       followers: result,
     });
   } catch (error) {
