@@ -2,8 +2,8 @@ const mainService = require("../service/main.service");
 
 exports.getList = async (req, res, next) => {
   try {
-    const uidResult = await mainService.selectUserUid();
-    const boardsResult = await mainService.selectBoards();
+    const uidResult = await mainService.selectUserUid(req);
+    const boardsResult = await mainService.selectBoards(req);
     res.render("index.html", {
       message: req.query.message,
       user: {

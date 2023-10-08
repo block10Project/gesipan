@@ -7,5 +7,9 @@ const mainRouter = require("./route/main.route");
 router.use("", mainRouter);
 router.use("/users", userRouter);
 router.use("/boards", boardRouter);
+router.use((error, req, res, next) => {
+  console.error(error);
+  next();
+});
 
 module.exports = router;
