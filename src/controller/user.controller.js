@@ -1,6 +1,6 @@
 const userService = require("../service/user.service");
 
-exports.getLogin = (req, res) => {
+exports.getLogin = (req, res, next) => {
   try {
     res.render("user/login.html", {
       message: req.query.message,
@@ -9,7 +9,7 @@ exports.getLogin = (req, res) => {
     next(error);
   }
 };
-exports.postLogin = async (req, res) => {
+exports.postLogin = async (req, res, next) => {
   try {
     const { id, pw } = req.body;
     const result = await userService.selectUserWhereIdPw(id, pw);
@@ -29,7 +29,7 @@ exports.postLogin = async (req, res) => {
   }
 };
 
-exports.getRegister = (req, res) => {
+exports.getRegister = (req, res, next) => {
   try {
     res.render("user/register.html", {
       message: req.query.message,
@@ -38,7 +38,7 @@ exports.getRegister = (req, res) => {
     next(error);
   }
 };
-exports.postRegister = async (req, res) => {
+exports.postRegister = async (req, res, next) => {
   try {
     const { nickname, id, pw } = req.body;
     const result = await userService.createUser(nickname, id, pw);
@@ -51,7 +51,7 @@ exports.postRegister = async (req, res) => {
   }
 };
 
-exports.getPassword = (req, res) => {
+exports.getPassword = (req, res, next) => {
   try {
     res.render("user/password.html", {
       message: req.query.message,
@@ -60,7 +60,7 @@ exports.getPassword = (req, res) => {
     next(error);
   }
 };
-exports.postPassword = async (req, res) => {
+exports.postPassword = async (req, res, next) => {
   try {
     const { nickname, id, newPw } = req.body;
     const result = await userService.updateUser(nickname, id, newPw);
@@ -75,7 +75,7 @@ exports.postPassword = async (req, res) => {
   }
 };
 
-exports.getInfo = async (req, res) => {
+exports.getInfo = async (req, res, next) => {
   try {
     const result = await userService.selectUser(req.query.id);
     if (!result) {
@@ -89,7 +89,7 @@ exports.getInfo = async (req, res) => {
   }
 };
 
-exports.getFollowing = async (req, res) => {
+exports.getFollowing = async (req, res, next) => {
   try {
     const result = await userService.selectFollowings(req.query.id);
     res.render("user/following.html", {
@@ -100,7 +100,7 @@ exports.getFollowing = async (req, res) => {
   }
 };
 
-exports.getFollower = async (req, res) => {
+exports.getFollower = async (req, res, next) => {
   try {
     const result = await userService.selectFollowers(req.query.id);
     res.render("user/follwer.html", {
@@ -111,7 +111,7 @@ exports.getFollower = async (req, res) => {
   }
 };
 
-exports.getList = async (req, res) => {
+exports.getList = async (req, res, next) => {
   try {
     const result = await userService.selectBoards(req.query.id);
     res.render("user/list.html", {
@@ -122,7 +122,7 @@ exports.getList = async (req, res) => {
   }
 };
 
-exports.getLogout = (req, res) => {
+exports.getLogout = (req, res, next) => {
   try {
     res.clearCookie("token");
     res.redirect("/");
