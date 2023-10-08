@@ -4,6 +4,12 @@ const jwt = new JWT();
 
 exports.selectUserWhereIdPw = async (id, pw) => {
   try {
+    if (!id) {
+      return { message: "아이디를 입력해주세요" };
+    }
+    if (!pw) {
+      return { message: "비밀번호를 입력해주세요" };
+    }
     const result = await userRepository.selectUserWhereIdPw(id, pw);
     if (!result) {
       return { isLogin: false, data: null };
@@ -35,9 +41,18 @@ exports.selectUser = async (id) => {
 
 exports.createUser = async (nickname, id, pw) => {
   try {
+    if (!nickname) {
+      return "닉네임을 입력해주세요";
+    }
+    if (!id) {
+      return "아이디를 입력해주세요";
+    }
+    if (!pw) {
+      return "비밀번호를 입력해주세요";
+    }
     const result = await userRepository.selectUser(id);
     if (result) {
-      return null;
+      return "이미 존재하는 아이디입니다.";
     }
     return await userRepository.createUser(nickname, id, pw);
   } catch (error) {
