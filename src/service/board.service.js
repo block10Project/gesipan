@@ -1,13 +1,10 @@
 const boardRepository = require("../repository/board.repository");
-const mainService = require("./main.service");
-const JWT = require("../lib/jwt");
-const jwt = new JWT();
 
-exports.createBoard = async (title, content) => {
+exports.createBoard = async (title, content, userUid) => {
   try {
-    return await boardRepository.createBoard(title, content);
+    return await boardRepository.createBoard(title, content, userUid);
   } catch (error) {
-    throw new Error("createBoard error: " + error.message);
+    throw new Error("createBoard error: ", error.message);
   }
 };
 
@@ -19,10 +16,9 @@ exports.selectBoard = async (id) => {
   }
 };
 
-exports.updateBoard = async (id, title, content) => {
+exports.updateBoard = async (id, title, content, userUid) => {
   try {
-    const userId = mainService.selectUserUid();
-    const compareId = boardRepository.selectBoardWhereUserId(id, userId);
+    const compareId = boardRepository.selectBoardWhereUserUid(id, userUid);
     if (!compareId) {
       return null;
     }
@@ -36,10 +32,9 @@ exports.updateBoard = async (id, title, content) => {
   }
 };
 
-exports.deleteBoard = async (id) => {
+exports.deleteBoard = async (id, userUid) => {
   try {
-    const userId = mainService.selectUserUid();
-    const compareId = boardRepository.selectBoardWhereUserId(id, userId);
+    const compareId = boardRepository.selectBoardWhereUserUid(id, userUid);
     if (!compareId) {
       return null;
     }
@@ -53,9 +48,9 @@ exports.deleteBoard = async (id) => {
   }
 };
 
-exports.createComment = async (id, comment) => {
+exports.createComment = async (id, userUid, comment) => {
   try {
-    return await boardRepository.createComment(id, comment);
+    return await boardRepository.createComment(id, userUid, comment);
   } catch (error) {
     throw new Error("updateBoard error: ", error.message);
   }
@@ -69,13 +64,13 @@ exports.selectComments = async (id) => {
   }
 };
 
-exports.createGood = async (id) => {
+exports.createGood = async (id, userUid) => {
   try {
     const boardResult = await boardRepository.selectBoard(id);
     if (!boardResult) {
       return null;
     }
-    const result = await boardRepository.createGood(id);
+    const result = await boardRepository.createGood(id, userUid);
     if (result) {
       return "이미 추천한 글입니다";
     } else {
@@ -86,26 +81,26 @@ exports.createGood = async (id) => {
   }
 };
 
-exports.createFollowing = async (id) => {
+exports.createFollow = async (id, userUid) => {
   try {
-    const followingResult = await boardRepository.createFollowing(id);
-    if (followingResult) {
-      return "팔로우했습니다.";
+    const followingResult = await boardRepository.createFollow(id, userUid);
+    if (!followingResult) {
+      return "이미 팔로우했습니다.";
     }
-    return "다시 시도해주세요.";
+    return "팔로우했습니다.";
   } catch (error) {
-    throw new Error("createFollowing error: ", error.message);
+    throw new Error("createFollow error: ", error.message);
   }
 };
 
-exports.deleteFollowing = async (id) => {
+exports.deleteFollow = async (id, userUid) => {
   try {
-    const followingResult = await boardRepository.deleteFollowing(id);
+    const followingResult = await boardRepository.deleteFollow(id, userUid);
     if (!followingResult) {
-      return "팔로우를 취소했습니다.";
+      return "이미 팔로우를 취소했습니다.";
     }
-    return "다시 시도해주세요.";
+    return "팔로우를 취소했습니다.";
   } catch (error) {
-    throw new Error("createFollowing error: ", error.message);
+    throw new Error("createFollow error: ", error.message);
   }
 };
