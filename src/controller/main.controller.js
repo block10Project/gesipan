@@ -18,14 +18,14 @@ exports.getList = async (req, res, next) => {
 
 exports.postSearch = (req, res, next) => {
   try {
-    res.redirect(`search.html?keyword=${req.body.keyword}`);
+    res.redirect(`/search?keyword=${req.body.keyword}`);
   } catch (error) {
     next(error);
   }
 };
 exports.getSearch = async (req, res, next) => {
   try {
-    const result = await mainService.selectBoards();
+    const result = await mainService.selectBoards(req);
     if (!result) {
       return res.redirect("/?message=검색 결과가 존재하지 않습니다.");
     }

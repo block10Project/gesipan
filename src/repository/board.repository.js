@@ -5,8 +5,8 @@ exports.createBoard = async (title, content, userUid) => {
     const sql = `
     insert into boards values(default, ?, ?, default, default, ?)
     `;
-    const [result] = await pool.query(sql, [title, content, userUid]);
-    return result;
+    const [[result]] = await pool.query(sql, [title, content, userUid]);
+    return result.insertId;
   } catch (error) {
     throw new Error("[sql] createBoard error: ", error.message);
   }

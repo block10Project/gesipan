@@ -4,6 +4,12 @@ const jwt = new JWT();
 
 exports.selectUserWhereIdPw = async (id, pw) => {
   try {
+    if (!id) {
+      return { message: "아이디를 입력해주세요" };
+    }
+    if (!pw) {
+      return { message: "비밀번호를 입력해주세요" };
+    }
     const result = await userRepository.selectUserWhereIdPw(id, pw);
     if (!result) {
       return { isLogin: false, data: null };
@@ -17,14 +23,17 @@ exports.selectUserWhereIdPw = async (id, pw) => {
 
 exports.selectUser = async (id) => {
   try {
-    const result = await userRepository.selectUser(id);
-    if (result) {
-      result.followings = await userRepository.selectUserFollowings(id);
-      result.followers = await userRepository.selectUserFollowers(id);
-      result.boards = await userRepository.selectUserBoards(id);
-      result.comments = await userRepository.selectUserComments(id);
+    if (id) {
+      const result = await userRepository.selectUser(id);
+      if (result) {
+        result.followings = await userRepository.selectUserFollowings(id);
+        result.followers = await userRepository.selectUserFollowers(id);
+        result.boards = await userRepository.selectUserBoards(id);
+        result.comments = await userRepository.selectUserComments(id);
+      }
+      return result;
     }
-    return result;
+    return null;
   } catch (error) {
     throw new Error("selectUser error: ", error.message);
   }
@@ -32,9 +41,18 @@ exports.selectUser = async (id) => {
 
 exports.createUser = async (nickname, id, pw) => {
   try {
+    if (!nickname) {
+      return "닉네임을 입력해주세요";
+    }
+    if (!id) {
+      return "아이디를 입력해주세요";
+    }
+    if (!pw) {
+      return "비밀번호를 입력해주세요";
+    }
     const result = await userRepository.selectUser(id);
     if (result) {
-      return null;
+      return "이미 존재하는 아이디입니다.";
     }
     return await userRepository.createUser(nickname, id, pw);
   } catch (error) {

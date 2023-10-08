@@ -13,8 +13,13 @@ exports.postLogin = async (req, res, next) => {
   try {
     const { id, pw } = req.body;
     const result = await userService.selectUserWhereIdPw(id, pw);
+    if (result.message) {
+      return res.redirect(`/users/login?message=${result.message}`);
+    }
     if (!result.isLogin) {
-      return res.redirect("/login?message=계정 정보가 일치하지 않습니다.");
+      return res.redirect(
+        "/users/login?message=계정 정보가 일치하지 않습니다."
+      );
     }
     res.cookie(
       "token",
@@ -42,8 +47,8 @@ exports.postRegister = async (req, res, next) => {
   try {
     const { nickname, id, pw } = req.body;
     const result = await userService.createUser(nickname, id, pw);
-    if (!result) {
-      return res.redirect("/users/register?message=이미 존재하는 ID입니다.");
+    if (result) {
+      return res.redirect(`/users/register?message=${result}`);
     }
     res.redirect("/users/login");
   } catch (error) {
@@ -103,7 +108,7 @@ exports.getFollowing = async (req, res, next) => {
 exports.getFollower = async (req, res, next) => {
   try {
     const result = await userService.selectFollowers(req.query.id);
-    res.render("user/follwer.html", {
+    res.render("user/follower.html", {
       followers: result,
     });
   } catch (error) {
