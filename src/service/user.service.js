@@ -2,30 +2,31 @@ const userRepository = require("../repository/user.repository");
 const JWT = require("../lib/jwt");
 const jwt = new JWT();
 
-exports.selectUser = async (id, pw) => {
+exports.selectUserWhereIdPw = async (id, pw) => {
   try {
-    const result = await userRepository.selectUser(id, pw);
+    const result = await userRepository.selectUserWhereIdPw(id, pw);
     if (!result) {
       return { isLogin: false, data: null };
     }
     const token = jwt.sign({ id: result.id });
     return { isLogin: true, data: token };
   } catch (error) {
-    throw new Error("selectUser error: ", error.message);
+    throw new Error("selectUserWhereIdPw error: ", error.message);
   }
 };
 
-exports.selectUserWhereId = async (id) => {
+exports.selectUser = async (id) => {
   try {
-    return await userRepository.selectUserWhereId(id);
+    const result = await userRepository.selectUser(id);
+    return result;
   } catch (error) {
-    throw new Error("selectUserWhereId error: ", error.message);
+    throw new Error("selectUser error: ", error.message);
   }
 };
 
 exports.createUser = async (nickname, id, pw) => {
   try {
-    const result = await userRepository.selectUserWhereId(id);
+    const result = await userRepository.selectUser(id);
     if (result) {
       return null;
     }
