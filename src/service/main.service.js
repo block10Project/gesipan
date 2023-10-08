@@ -2,16 +2,19 @@ const mainRepository = require("../repository/main.repository");
 const JWT = require("../lib/jwt");
 const jwt = new JWT();
 
-exports.selectUserUid = async (req, res) => {
+exports.selectUserUid = async (req) => {
   try {
-    const payload = jwt.verify(req.cookies, "subin");
-    return await mainRepository.selectUserUid(payload.id);
+    if (req.cookies.token) {
+      const payload = jwt.verify(req.cookies.token, "subin");
+      return await mainRepository.selectUserUid(payload.id);
+    }
+    return null;
   } catch (error) {
     throw new Error("selectUserUid error: ", error.message);
   }
 };
 
-exports.selectBoards = async (req, res) => {
+exports.selectBoards = async (req) => {
   try {
     if (!req.query.id) {
       req.query.id = 1;
