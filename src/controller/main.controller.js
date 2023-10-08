@@ -25,7 +25,7 @@ exports.postSearch = (req, res) => {
 };
 exports.getSearch = async (req, res) => {
   try {
-    const result = await mainService.selectBoards(keyword);
+    const result = await mainService.selectBoards();
     if (!result) {
       return res.redirect("/?message=검색 결과가 존재하지 않습니다.");
     }

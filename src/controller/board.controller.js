@@ -33,16 +33,9 @@ exports.getRead = async (req, res) => {
     if (!boardResult) {
       return res.redirect("/?message=존재하지 않는 글입니다.");
     }
-    const userFollowingsResult = await mainService.selectUserFollowings();
-    if (!userFollowingsResult) {
-      return res.redirect("/?message=로그인이 필요합니다.");
-    }
     const commentsResult = await boardService.selectComments(req.query.id);
     res.render("board/read.html", {
       message: req.query.message,
-      user: {
-        followings: userFollowingsResult,
-      },
       board: boardResult,
       comments: commentsResult,
     });

@@ -12,7 +12,7 @@ exports.getLogin = (req, res) => {
 exports.postLogin = async (req, res) => {
   try {
     const { id, pw } = req.body;
-    const result = await userService.selectUser(id, pw);
+    const result = await userService.selectUserWhereIdPw(id, pw);
     if (!result.isLogin) {
       return res.redirect("/login?message=계정 정보가 일치하지 않습니다.");
     }
@@ -77,7 +77,7 @@ exports.postPassword = async (req, res) => {
 
 exports.getInfo = async (req, res) => {
   try {
-    const result = await userService.selectUserWhereId(req.query.id);
+    const result = await userService.selectUser(req.query.id);
     if (!result) {
       return res.redirect("/?message=존재하지 않는 계정입니다.");
     }
