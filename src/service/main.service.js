@@ -11,15 +11,6 @@ exports.selectUserUid = async (req, res) => {
   }
 };
 
-exports.selectUserFollowings = async (req, res) => {
-  try {
-    const result = jwt.verity(req.cookies, "subin");
-    return await mainRepository.selectUserFollowings(result);
-  } catch (error) {
-    throw new Error("selectUserFollowings error: ", error.message);
-  }
-};
-
 exports.selectBoards = async (req, res) => {
   try {
     return await mainRepository.selectBoards();
