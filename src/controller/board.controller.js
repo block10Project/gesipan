@@ -1,7 +1,7 @@
 const mainService = require("../service/main.service");
 const boardService = require("../service/board.service");
 
-exports.getWrite = async (req, res) => {
+exports.getWrite = async (req, res, next) => {
   try {
     const result = await mainService.selectUserUid();
     if (!result) {
@@ -14,7 +14,7 @@ exports.getWrite = async (req, res) => {
     next(error);
   }
 };
-exports.postWrite = async (req, res) => {
+exports.postWrite = async (req, res, next) => {
   try {
     const { title, content } = req.body;
     const userUid = await mainService.selectUserUid();
@@ -28,7 +28,7 @@ exports.postWrite = async (req, res) => {
   }
 };
 
-exports.getRead = async (req, res) => {
+exports.getRead = async (req, res, next) => {
   try {
     const boardResult = await boardService.selectBoard(req.query.id);
     if (!boardResult) {
@@ -45,7 +45,7 @@ exports.getRead = async (req, res) => {
   }
 };
 
-exports.getGood = async (req, res) => {
+exports.getGood = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid();
     const result = await boardService.createGood(req.query.id, userUid);
@@ -58,7 +58,7 @@ exports.getGood = async (req, res) => {
   }
 };
 
-exports.getFollowing = async (req, res) => {
+exports.getFollowing = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid();
     const result = await boardService.createFollow(req.query.id, userUid);
@@ -71,7 +71,7 @@ exports.getFollowing = async (req, res) => {
   }
 };
 
-exports.getUnfollowing = async (req, res) => {
+exports.getUnfollowing = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid();
     const result = await boardService.deleteFollow(req.query.id, userUid);
@@ -84,7 +84,7 @@ exports.getUnfollowing = async (req, res) => {
   }
 };
 
-exports.getModify = async (req, res) => {
+exports.getModify = async (req, res, next) => {
   try {
     const result = await boardService.selectBoard(req.query.id);
     if (!result) {
@@ -100,7 +100,7 @@ exports.getModify = async (req, res) => {
     next(error);
   }
 };
-exports.postModify = async (req, res) => {
+exports.postModify = async (req, res, next) => {
   try {
     const { title, content } = req.body;
     const userUid = await mainService.selectUserUid();
@@ -121,7 +121,7 @@ exports.postModify = async (req, res) => {
   }
 };
 
-exports.getDelete = async (req, res) => {
+exports.getDelete = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid();
     const result = await boardService.deleteBoard(req.query.id, userUid);
@@ -136,7 +136,7 @@ exports.getDelete = async (req, res) => {
   }
 };
 
-exports.postComment = async (req, res) => {
+exports.postComment = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid();
     const result = await boardService.createComment(

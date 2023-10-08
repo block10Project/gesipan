@@ -1,6 +1,6 @@
 const mainService = require("../service/main.service");
 
-exports.getList = async (req, res) => {
+exports.getList = async (req, res, next) => {
   try {
     const uidResult = await mainService.selectUserUid();
     const boardsResult = await mainService.selectBoards();
@@ -16,14 +16,14 @@ exports.getList = async (req, res) => {
   }
 };
 
-exports.postSearch = (req, res) => {
+exports.postSearch = (req, res, next) => {
   try {
     res.redirect(`search.html?keyword=${req.body.keyword}`);
   } catch (error) {
     next(error);
   }
 };
-exports.getSearch = async (req, res) => {
+exports.getSearch = async (req, res, next) => {
   try {
     const result = await mainService.selectBoards();
     if (!result) {
