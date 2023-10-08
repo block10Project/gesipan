@@ -13,6 +13,9 @@ exports.selectUserUid = async (req, res) => {
 
 exports.selectBoards = async (req, res) => {
   try {
+    if (req.query.keyword) {
+      return await mainRepository.selectBoardsWhereKeyword(req.query.keyword);
+    }
     return await mainRepository.selectBoards();
   } catch (error) {
     throw new Error("selectBoards error: ", error.message);
