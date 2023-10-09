@@ -4,8 +4,8 @@ const boardService = require("../service/board.service");
 exports.getWrite = async (req, res, next) => {
   try {
     const result = await mainService.selectUserUid(req);
-    if (!result) {
-      return res.redirect("/?message=로그인이 필요합니다.");
+    if (result.message) {
+      return res.redirect(`/?message=${result.message}`);
     }
     res.render("board/write.html", {
       message: req.query.message,
@@ -20,9 +20,9 @@ exports.postWrite = async (req, res, next) => {
     const userUid = await mainService.selectUserUid(req);
     const result = await boardService.createBoard(title, content, userUid);
     if (result.message) {
-      return res.redirect(`/boards/write?message=${result}`);
+      return res.redirect(`/boards/write?message=${result.message}`);
     }
-    res.redirect(`/boards/read?id=${result}`);
+    res.redirect(`/boards/read?id=${result.result}`);
   } catch (error) {
     next(error);
   }
@@ -31,14 +31,14 @@ exports.postWrite = async (req, res, next) => {
 exports.getRead = async (req, res, next) => {
   try {
     const boardResult = await boardService.selectBoard(req.query.id);
-    if (!boardResult) {
-      return res.redirect("/?message=존재하지 않는 글입니다.");
+    if (boardResult.message) {
+      return res.redirect(`/?message=${boardResult.message}`);
     }
     const commentsResult = await boardService.selectComments(req.query.id);
     res.render("board/read.html", {
       message: req.query.message,
-      board: boardResult,
-      comments: commentsResult,
+      board: boardResult.result,
+      comments: commentsResult.result,
     });
   } catch (error) {
     next(error);
@@ -49,10 +49,7 @@ exports.getGood = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid(req);
     const result = await boardService.createGood(req.query.id, userUid);
-    if (!result) {
-      return res.redirect("/?message=존재하지 않는 글입니다.");
-    }
-    res.redirect(`/boards/read?id=${req.query.id}&message=${result}`);
+    res.redirect(`/boards/read?id=${req.query.id}&message=${result.message}`);
   } catch (error) {
     next(error);
   }
@@ -64,9 +61,9 @@ exports.getFollowing = async (req, res, next) => {
       const userUid = await mainService.selectUserUid(req);
       const result = await boardService.createFollow(req.query.id, userUid);
       if (!result) {
-        return res.redirect("/?message=존재하지 않는 사용자입니다.");
+        return res.redirect(`/?message=${result.message}`);
       }
-      res.redirect(`/boards/read?id=${req.query.id}&message=${result}`);
+      res.redirect(`/boards/read?id=${req.query.id}&message=${result.result}`);
     }
     res.redirect("/");
   } catch (error) {

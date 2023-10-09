@@ -18,6 +18,9 @@ exports.createBoard = async (title, content, userUid) => {
 exports.selectBoard = async (id) => {
   try {
     const result = await boardRepository.selectBoard(id);
+    if (!result) {
+      return { message: "존재하지 않는 글입니다." };
+    }
     return { result: result };
   } catch (error) {
     throw new Error("selectBoard error: ", error.message);
@@ -106,7 +109,7 @@ exports.createFollow = async (id, userUid) => {
   try {
     const followingResult = await boardRepository.createFollow(id, userUid);
     if (!followingResult) {
-      return { message: "이미 팔로우했습니다." };
+      return { message: "존재하지 않는 사용자입니다." };
     }
     return { message: "팔로우했습니다." };
   } catch (error) {
@@ -118,7 +121,7 @@ exports.deleteFollow = async (id, userUid) => {
   try {
     const followingResult = await boardRepository.deleteFollow(id, userUid);
     if (!followingResult) {
-      return { message: "이미 팔로우를 취소했습니다." };
+      return { message: "존재하지 않는 사용자입니다." };
     }
     return { message: "팔로우를 취소했습니다." };
   } catch (error) {
