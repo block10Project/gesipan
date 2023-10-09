@@ -1,41 +1,37 @@
-const getLogin = () => {
+if (location.href.split("?")[1] !== undefined) {
+  const url = location.href.split("?")[1].split("=")[1];
+  alert(decodeURI(url));
+  history.pushState(null, null, "/");
+}
+
+const makeModal = (method, url, elementName) => {
+  const name = elementName;
   $.ajax({
-    type: "get",
-    url: "/users/login",
+    type: method,
+    url: url,
     async: true,
     success: function (result) {
-      const loginModalElement = document.createElement("div");
-      loginModalElement.style.width = "409px";
-      loginModalElement.style.height = "363px";
-      loginModalElement.style.position = "fixed";
-      loginModalElement.style.border = "1px solid black";
-      loginModalElement.id = "login-modal-element";
+      elementName = document.createElement("div");
+      elementName.style.width = "409px";
+      elementName.style.height = "363px";
+      elementName.style.position = "fixed";
+      elementName.style.border = "1px solid black";
 
-      loginModalElement.style.top = "50%";
-      loginModalElement.style.left = "50%";
-      loginModalElement.style.transform = "translate(-50%, -50%)";
-      loginModalElement.innerHTML = result;
+      elementName.id = name;
+      elementName.style.backgroundColor = "rgb(248,248,248)";
+      elementName.style.border = "none";
+      elementName.style.borderRadius = "6px";
 
-      document.getElementsByTagName("main")[0].appendChild(loginModalElement);
-      addClickEventListener();
+      elementName.style.top = "50%";
+      elementName.style.left = "50%";
+      elementName.style.transform = "translate(-50%, -50%)";
+      elementName.innerHTML = result;
+      console.log(elementName);
+
+      document.getElementsByTagName("main")[0].appendChild(elementName);
     },
     error: function (request, status, error) {
       console.log(error);
     },
   });
-};
-
-const addClickEventListener = () => {
-  function callback(e) {
-    const clickTarget = e.target;
-    if (
-      !clickTarget.id === "login-modal-element" ||
-      !document.getElementById("login-modal-element").contains(clickTarget)
-    ) {
-      document.getElementById("login-modal-element").remove();
-      document.removeEventListener("click", callback);
-    }
-  }
-
-  document.addEventListener("click", callback);
 };

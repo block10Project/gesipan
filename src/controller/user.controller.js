@@ -12,13 +12,14 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = async (req, res, next) => {
   try {
     const { id, pw } = req.body;
+    console.log(id, pw);
     const result = await userService.selectUserWhereIdPw(id, pw);
     if (result.message) {
       return res.redirect(`/users/login?message=${result.message}`);
     }
     if (!result.isLogin) {
       return res.redirect(
-        "/users/login?message=계정 정보가 일치하지 않습니다."
+        "/users/login?message=계정 정보가 일치하지 않습니다.",
       );
     }
     res.cookie(
@@ -26,7 +27,7 @@ exports.postLogin = async (req, res, next) => {
       result.data,
       (maxAge = 600),
       (domain = "localhost"),
-      (path = "/")
+      (path = "/"),
     );
     res.redirect("/");
   } catch (error) {
@@ -52,6 +53,7 @@ exports.postRegister = async (req, res, next) => {
     }
     return res.redirect(`/users/register?message=${result.message}`);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -69,8 +71,10 @@ exports.postPassword = async (req, res, next) => {
   try {
     const { nickname, id, newPw } = req.body;
     const result = await userService.updateUser(nickname, id, newPw);
+
     if (result.result) {
       return res.redirect(`/users/login?message=${result.message}`);
+
     }
     return res.redirect(`/users/password?message=${result.message}`);
   } catch (error) {
