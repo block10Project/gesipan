@@ -9,7 +9,7 @@ exports.selectUserUid = async (req) => {
       const result = await mainRepository.selectUserUid(payload.id);
       return { result: result };
     }
-    return null;
+    return { result: null };
   } catch (error) {
     throw new Error("selectUserUid error: ", error.message);
   }
