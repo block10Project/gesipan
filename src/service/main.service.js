@@ -9,7 +9,7 @@ exports.selectUserUid = async (req) => {
       const result = await mainRepository.selectUserUid(payload.id);
       return { result: result };
     }
-    return { result: null };
+    return { message: "로그인이 필요합니다." };
   } catch (error) {
     throw new Error("selectUserUid error: ", error.message);
   }
@@ -27,6 +27,9 @@ exports.selectBoards = async (req) => {
         req.query.keyword,
         req.query.id
       );
+      if (!result) {
+        return { message: "검색 결과가 없습니다." };
+      }
       return { result: result };
     }
     const result = await mainRepository.selectBoards(req.query.id);

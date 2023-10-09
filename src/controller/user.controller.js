@@ -47,10 +47,10 @@ exports.postRegister = async (req, res, next) => {
   try {
     const { nickname, id, pw } = req.body;
     const result = await userService.createUser(nickname, id, pw);
-    if (result) {
-      return res.redirect(`/users/register?message=${result}`);
+    if (result.result) {
+      res.redirect(`/users/login?message=${result.message}`);
     }
-    res.redirect("/users/login");
+    return res.redirect(`/users/register?message=${result.message}`);
   } catch (error) {
     next(error);
   }
@@ -69,12 +69,10 @@ exports.postPassword = async (req, res, next) => {
   try {
     const { nickname, id, newPw } = req.body;
     const result = await userService.updateUser(nickname, id, newPw);
-    if (!result) {
-      return res.redirect(
-        "/users/password?message=계정 정보가 일치하지 않습니다."
-      );
+    if (result.result) {
+      return res.redirect(`/users/login?message=${result.message}`);
     }
-    res.redirect("/users/login");
+    return res.redirect(`/users/password?message=${result.message}`);
   } catch (error) {
     next(error);
   }
@@ -83,11 +81,11 @@ exports.postPassword = async (req, res, next) => {
 exports.getInfo = async (req, res, next) => {
   try {
     const result = await userService.selectUser(req.query.id);
-    if (!result) {
-      return res.redirect("/?message=존재하지 않는 계정입니다.");
+    if (result.message) {
+      return res.redirect(`/?message=${result.message}`);
     }
     res.render("user/info.html", {
-      user: result,
+      user: result.result,
     });
   } catch (error) {
     next(error);
@@ -98,7 +96,7 @@ exports.getFollowing = async (req, res, next) => {
   try {
     const result = await userService.selectFollowings(req.query.id);
     res.render("user/following.html", {
-      followings: result,
+      followings: result.result,
     });
   } catch (error) {
     next(error);
@@ -109,7 +107,7 @@ exports.getFollower = async (req, res, next) => {
   try {
     const result = await userService.selectFollowers(req.query.id);
     res.render("user/follower.html", {
-      followers: result,
+      followers: result.result,
     });
   } catch (error) {
     next(error);
@@ -120,7 +118,7 @@ exports.getList = async (req, res, next) => {
   try {
     const result = await userService.selectBoards(req.query.id);
     res.render("user/list.html", {
-      boards: result,
+      boards: result.result,
     });
   } catch (error) {
     next(error);

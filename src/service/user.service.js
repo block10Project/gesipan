@@ -25,6 +25,9 @@ exports.selectUser = async (id) => {
   try {
     if (id) {
       const result = await userRepository.selectUser(id);
+      if (!result) {
+        return { message: "존재하지 않는 계정입니다." };
+      }
       if (result) {
         result.followings = await userRepository.selectUserFollowings(id);
         result.followers = await userRepository.selectUserFollowers(id);
@@ -33,7 +36,7 @@ exports.selectUser = async (id) => {
       }
       return { result: result };
     }
-    return null;
+    return { message: "uid가 누락되었습니다." };
   } catch (error) {
     throw new Error("selectUser error: ", error.message);
   }
@@ -55,7 +58,7 @@ exports.createUser = async (nickname, id, pw) => {
       return { message: "이미 존재하는 아이디입니다." };
     }
     const result = await userRepository.createUser(nickname, id, pw);
-    return { result: result };
+    return { result: result, message: "회원가입에 성공했습니다." };
   } catch (error) {
     throw new Error("createUser error: ", error.message);
   }
@@ -64,7 +67,10 @@ exports.createUser = async (nickname, id, pw) => {
 exports.updateUser = async (nickname, id, newPw) => {
   try {
     const result = await userRepository.updateUser(nickname, id, newPw);
-    return { result: result };
+    if (!result) {
+      return { message: "계정 정보가 일치하지 않습니다." };
+    }
+    return { result: result, message: "비밀번호를 변경했습니다." };
   } catch (error) {
     throw new Error("updateUser error: ", error.message);
   }

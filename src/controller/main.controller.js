@@ -7,9 +7,9 @@ exports.getList = async (req, res, next) => {
     res.render("index.html", {
       message: req.query.message,
       user: {
-        uid: uidResult,
+        uid: uidResult.result,
       },
-      boards: boardsResult,
+      boards: boardsResult.result,
     });
   } catch (error) {
     next(error);
@@ -26,12 +26,12 @@ exports.postSearch = (req, res, next) => {
 exports.getSearch = async (req, res, next) => {
   try {
     const result = await mainService.selectBoards(req);
-    if (!result) {
-      return res.redirect("/?message=검색 결과가 존재하지 않습니다.");
+    if (result.message) {
+      return res.redirect(`/?message=${result.message}`);
     }
     res.render("search.html", {
       keyword: req.query.keyword,
-      boards: result,
+      boards: result.result,
     });
   } catch (error) {
     next(error);
