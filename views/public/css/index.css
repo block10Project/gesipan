@@ -12,8 +12,26 @@ header {
     background-color: black;
     border: none;
     color: white;
-    width: 60px;
-    height: 25px;
+    width: 116px;
+    height: 48px;
+    border-radius: 5px;
+}
+
+.button-black-l {
+    background-color: black;
+    border: none;
+    color: white;
+    width: 177px;
+    height: 48px;
+    border-radius: 5px;
+}
+
+.button-black-xl {
+    background-color: black;
+    border: none;
+    color: white;
+    width: 311px;
+    height: 48px;
     border-radius: 5px;
 }
 
@@ -45,4 +63,19 @@ header {
 
 .main-table-body tr {
     border-bottom: 1px solid black;
+}
+
+/*input*/
+.input-grey-m {
+    width: 311px;
+    height: 54px;
+
+}
+
+/*footer*/
+footer {
+    margin-top: 100px;
+    
+    display: flex;
+    justify-content: right;
 }
