@@ -31,7 +31,7 @@ exports.selectUser = async (id) => {
         result.boards = await userRepository.selectUserBoards(id);
         result.comments = await userRepository.selectUserComments(id);
       }
-      return result;
+      return { result: result };
     }
     return null;
   } catch (error) {
@@ -42,19 +42,20 @@ exports.selectUser = async (id) => {
 exports.createUser = async (nickname, id, pw) => {
   try {
     if (!nickname) {
-      return "닉네임을 입력해주세요";
+      return { message: "닉네임을 입력해주세요" };
     }
     if (!id) {
-      return "아이디를 입력해주세요";
+      return { message: "아이디를 입력해주세요" };
     }
     if (!pw) {
-      return "비밀번호를 입력해주세요";
+      return { message: "비밀번호를 입력해주세요" };
     }
-    const result = await userRepository.selectUser(id);
-    if (result) {
-      return "이미 존재하는 아이디입니다.";
+    const checkUser = await userRepository.selectUser(id);
+    if (checkUser) {
+      return { message: "이미 존재하는 아이디입니다." };
     }
-    return await userRepository.createUser(nickname, id, pw);
+    const result = await userRepository.createUser(nickname, id, pw);
+    return { result: result };
   } catch (error) {
     throw new Error("createUser error: ", error.message);
   }
@@ -62,7 +63,8 @@ exports.createUser = async (nickname, id, pw) => {
 
 exports.updateUser = async (nickname, id, newPw) => {
   try {
-    return await userRepository.updateUser(nickname, id, newPw);
+    const result = await userRepository.updateUser(nickname, id, newPw);
+    return { result: result };
   } catch (error) {
     throw new Error("updateUser error: ", error.message);
   }
@@ -70,7 +72,8 @@ exports.updateUser = async (nickname, id, newPw) => {
 
 exports.selectFollowings = async (id) => {
   try {
-    return await userRepository.selectFollowings(id);
+    const result = await userRepository.selectFollowings(id);
+    return { result: result };
   } catch (error) {
     throw new Error("selectFollowings error: ", error.message);
   }
@@ -78,7 +81,8 @@ exports.selectFollowings = async (id) => {
 
 exports.selectFollowers = async (id) => {
   try {
-    return await userRepository.selectFollowers(id);
+    const result = await userRepository.selectFollowers(id);
+    return { result: result };
   } catch (error) {
     throw new Error("selectFollowers error: ", error.message);
   }
@@ -86,7 +90,8 @@ exports.selectFollowers = async (id) => {
 
 exports.selectBoards = async (id) => {
   try {
-    return await userRepository.selectBoards(id);
+    const result = await userRepository.selectBoards(id);
+    return { result: result };
   } catch (error) {
     throw new Error("selectBoards error: ", error.message);
   }
