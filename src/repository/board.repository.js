@@ -112,7 +112,7 @@ exports.createGood = async (id, userUid) => {
     insert into goods values(?, ?)
     `;
     const [[result]] = await pool.query(sql, [id, userUid]);
-    return result;
+    return null;
   } catch (error) {
     throw new Error("[sql] createGood error: ", error.message);
   }
@@ -120,13 +120,13 @@ exports.createGood = async (id, userUid) => {
 
 exports.createFollow = async (id, userUid) => {
   try {
-    const selectFollow = `
+    const selectUser = `
     select * 
-    from follows 
-    where followed_user_uid = ? and following_user_uid = ?
+    from users 
+    where uid = ?
     `;
-    const [[followResult]] = await pool.query(selectFollow, [id, userUid]);
-    if (followResult) {
+    const selectUserResult = await pool.query(selectUser, [id]);
+    if (!selectUserResult) {
       return null;
     }
 
@@ -142,13 +142,13 @@ exports.createFollow = async (id, userUid) => {
 
 exports.deleteFollow = async (id, userUid) => {
   try {
-    const selectFollow = `
-      select * 
-      from follows 
-      where followed_user_uid = ? and following_user_uid = ?
-      `;
-    const [[followResult]] = await pool.query(selectFollow, [id, userUid]);
-    if (!followResult) {
+    const selectUser = `
+    select * 
+    from users 
+    where uid = ?
+    `;
+    const selectUserResult = await pool.query(selectUser, [id]);
+    if (!selectUserResult) {
       return null;
     }
 
