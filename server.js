@@ -11,6 +11,7 @@ nunjucks.configure("views", { express: app });
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("views/public"));
 app.use(middleware.auth);
 app.use(router);
 
