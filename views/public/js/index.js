@@ -26,8 +26,6 @@ const makeModal = (method, url, elementName) => {
       elementName.style.left = "50%";
       elementName.style.transform = "translate(-50%, -50%)";
       elementName.innerHTML = result;
-      console.log(elementName);
-
       document.getElementsByTagName("main")[0].appendChild(elementName);
     },
     error: function (request, status, error) {
