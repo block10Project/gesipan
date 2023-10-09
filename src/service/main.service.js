@@ -6,7 +6,8 @@ exports.selectUserUid = async (req) => {
   try {
     if (req.cookies.token) {
       const payload = jwt.verify(req.cookies.token, "subin");
-      return await mainRepository.selectUserUid(payload.id);
+      const result = await mainRepository.selectUserUid(payload.id);
+      return { result: result };
     }
     return null;
   } catch (error) {
@@ -22,12 +23,14 @@ exports.selectBoards = async (req) => {
       req.query.id = Number(req.query.id);
     }
     if (req.query.keyword) {
-      return await mainRepository.selectBoardsWhereKeyword(
+      const result = await mainRepository.selectBoardsWhereKeyword(
         req.query.keyword,
         req.query.id
       );
+      return { result: result };
     }
-    return await mainRepository.selectBoards(req.query.id);
+    const result = await mainRepository.selectBoards(req.query.id);
+    return { result: result };
   } catch (error) {
     throw new Error("selectBoards error: ", error.message);
   }
