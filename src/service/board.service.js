@@ -73,7 +73,8 @@ exports.createComment = async (id, userUid, comment) => {
     if (!userUid) {
       return { message: "로그인이 필요합니다." };
     }
-    return await boardRepository.createComment(id, userUid, comment);
+    const result = await boardRepository.createComment(id, userUid, comment);
+    return { result: result, message: "댓글을 작성했습니다." };
   } catch (error) {
     throw new Error("updateBoard error: ", error.message);
   }

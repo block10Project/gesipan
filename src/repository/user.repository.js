@@ -3,11 +3,25 @@ const pool = require("../../pool");
 exports.selectUserWhereIdPw = async (id, pw) => {
   try {
     const sql = `
-    select id 
+    select uid, id, nickname 
     from users 
     where id = ? and pw = ?
     `;
     const [[result]] = await pool.query(sql, [id, pw]);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] selectUserWhereIdPw error: ", error.message);
+  }
+};
+
+exports.selectUserWhereId = async (id) => {
+  try {
+    const sql = `
+    select uid, id, nickname 
+    from users 
+    where id = ?
+    `;
+    const [[result]] = await pool.query(sql, [id]);
     return result;
   } catch (error) {
     throw new Error("[sql] selectUserWhereIdPw error: ", error.message);
@@ -33,8 +47,8 @@ exports.createUser = async (nickname, id, pw) => {
     const sql = `
     insert into users values(default, ?, ?, ?);
     `;
-    const [[result]] = await pool.query(sql, [nickname, id, pw]);
-    return result;
+    const [result] = await pool.query(sql, [nickname, id, pw]);
+    return result.insertId;
   } catch (error) {
     throw new Error("[sql] createUser error: ", error.message);
   }
@@ -57,7 +71,7 @@ exports.updateUser = async (nickname, id, newPw) => {
     set pw = ? 
     where uid = ?
     `;
-    const [[result]] = await pool.query(sql, [newPw, uid]);
+    const result = await pool.query(sql, [newPw, uid]);
     return result;
   } catch (error) {
     throw new Error("[sql] updateUser error: ", error.message);
@@ -162,7 +176,7 @@ exports.selectUserComments = async (id) => {
     const sql = `
       select count(comment) 
       from comments 
-      group by user_uid 
+      group by comment_user_uid 
       having comment_user_uid = ?
       `;
     const [[result]] = await pool.query(sql, [id]);

@@ -48,7 +48,7 @@ exports.postRegister = async (req, res, next) => {
     const { nickname, id, pw } = req.body;
     const result = await userService.createUser(nickname, id, pw);
     if (result.result) {
-      res.redirect(`/users/login?message=${result.message}`);
+      return res.redirect(`/users/login?message=${result.message}`);
     }
     return res.redirect(`/users/register?message=${result.message}`);
   } catch (error) {

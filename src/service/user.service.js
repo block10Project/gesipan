@@ -14,10 +14,31 @@ exports.selectUserWhereIdPw = async (id, pw) => {
     if (!result) {
       return { isLogin: false, data: null };
     }
-    const token = jwt.sign({ id: result.id });
+    const token = jwt.sign({ id });
     return { isLogin: true, data: token };
   } catch (error) {
     throw new Error("selectUserWhereIdPw error: ", error.message);
+  }
+};
+
+exports.selectUserWhereId = async (id) => {
+  try {
+    if (id) {
+      const result = await userRepository.selectUserWhereId(id);
+      if (!result) {
+        return { message: "존재하지 않는 계정입니다." };
+      }
+      if (result) {
+        result.followings = await userRepository.selectUserFollowings(id);
+        result.followers = await userRepository.selectUserFollowers(id);
+        result.boards = await userRepository.selectUserBoards(id);
+        result.comments = await userRepository.selectUserComments(id);
+      }
+      return { result: result };
+    }
+    return { message: "id가 누락되었습니다." };
+  } catch (error) {
+    throw new Error("selectUserWhereId error: ", error.message);
   }
 };
 
