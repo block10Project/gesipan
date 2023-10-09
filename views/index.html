@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>gesipan</title>
+
+    <link rel="stylesheet" href="css/index.css">
+    <script defer src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script defer src="js/index.js"></script>
+
+</head>
+
+<body>
+
+<header>
+    <button class="button-black-m" onclick="getLogin()">로그인</button>
+</header>
+
+<!-- Image Slider, table-->
+<main>
+    <div class="main-image-slider"></div>
+    <table class="main-table">
+        <thead class="main-table-head">
+        <tr>
+            <th>no</th>
+            <th>글 제목</th>
+            <th>작성자</th>
+            <th>조회수</th>
+            <th>추천수</th>
+            <th>작성 시간</th>
+        </tr>
+        </thead>
+
+        <tbody class="main-table-body">
+
+        {% for board in boards %}
+        <tr>
+            <td>{{board.id}}</td>
+            <td>{{board.title}}({{board.comments}})</td>
+            <td>{{board.nickname}}</td>
+            <td>{{board.views}}</td>
+            <td>{{board.goods}}</td>
+            <td>{{board.createdAt}}</td>
+        </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+</main>
+
+<footer></footer>
+
+
+</body>
+</html>

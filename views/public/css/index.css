@@ -1,0 +1,48 @@
+header {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+
+/*buttons*/
+
+.button-black-m {
+    background-color: black;
+    border: none;
+    color: white;
+    width: 60px;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.button-black-m:hover {
+    background-color: #403535;
+}
+
+/*image slider*/
+.main-image-slider {
+
+    width: 30%;
+    height: 500px;
+    margin: auto;
+    overflow: hidden;
+}
+
+
+/*table*/
+.main-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.main-table-head {
+    background-color: gray;
+    border-radius: 10px;
+
+}
+
+.main-table-body tr {
+    border-bottom: 1px solid black;
+}
