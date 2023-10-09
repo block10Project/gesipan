@@ -12,7 +12,7 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = async (req, res, next) => {
   try {
     const { id, pw } = req.body;
-    console.log(id, pw);
+
     const result = await userService.selectUserWhereIdPw(id, pw);
     if (result.message) {
       return res.redirect(`/users/login?message=${result.message}`);
@@ -74,7 +74,6 @@ exports.postPassword = async (req, res, next) => {
 
     if (result.result) {
       return res.redirect(`/users/login?message=${result.message}`);
-
     }
     return res.redirect(`/users/password?message=${result.message}`);
   } catch (error) {
