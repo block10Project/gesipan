@@ -9,8 +9,8 @@ exports.auth = async (req, res, next) => {
       return next();
     }
     const payload = jwt.verify(token, "subin");
-    const user = await userService.findOneByUserId(payload.id);
-    req.user = user;
+    const user = await userService.selectUserWhereId(payload.id);
+    req.user = user.result;
     next();
   } catch (error) {
     next(error);

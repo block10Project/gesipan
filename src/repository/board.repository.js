@@ -5,7 +5,7 @@ exports.createBoard = async (title, content, userUid) => {
     const sql = `
     insert into boards values(default, ?, ?, default, default, ?)
     `;
-    const [[result]] = await pool.query(sql, [title, content, userUid]);
+    const [result] = await pool.query(sql, [title, content, userUid]);
     return result.insertId;
   } catch (error) {
     throw new Error("[sql] createBoard error: ", error.message);
@@ -33,13 +33,9 @@ exports.selectBoard = async (id) => {
 exports.selectBoardWhereUserUid = async (id, userUid) => {
   try {
     const sql = `
-    select uid 
-    from users 
-    where uid = (
-        select board_user_uid 
-        from boards 
-        where uid = ?
-    ) and uid = ?
+      select * 
+      from boards 
+      where uid = ? and board_user_uid = ?
     `;
     const [[result]] = await pool.query(sql, [id, userUid]);
     return result;
@@ -53,7 +49,7 @@ exports.updateBoard = async (id, title, content) => {
     const sql = `
     update boards set title = ?, content = ? where uid = ?
     `;
-    const [[result]] = await pool.query(sql, [title, content, id]);
+    const result = await pool.query(sql, [title, content, id]);
     return result;
   } catch (error) {
     throw new Error("[sql] updateBoard error: ", error.message);
@@ -65,7 +61,7 @@ exports.deleteBoard = async (id) => {
     const sql = `
     delete from boards where uid = ?
     `;
-    const [[result]] = await pool.query(sql, [id]);
+    const result = await pool.query(sql, [id]);
     return result;
   } catch (error) {
     throw new Error("[sql] deleteBoard error: ", error.message);
@@ -77,8 +73,8 @@ exports.createComment = async (id, userUid, comment) => {
     const sql = `
     insert into comments values(?, ?, ?, default)
     `;
-    const [[result]] = await pool.query(sql, [id, userUid, comment]);
-    return result;
+    const [result] = await pool.query(sql, [id, userUid, comment]);
+    return result.insertId;
   } catch (error) {
     throw new Error("[sql] createComment error: ", error.message);
   }
@@ -89,7 +85,7 @@ exports.selectComments = async (id) => {
     const sql = `
     select * from comments where board_uid = ?
     `;
-    const [[result]] = await pool.query(sql, [id]);
+    const [result] = await pool.query(sql, [id]);
     return result;
   } catch (error) {
     throw new Error("[sql] selectComments error: ", error.message);
@@ -111,7 +107,7 @@ exports.createGood = async (id, userUid) => {
     const sql = `
     insert into goods values(?, ?)
     `;
-    const [[result]] = await pool.query(sql, [id, userUid]);
+    const result = await pool.query(sql, [id, userUid]);
     return null;
   } catch (error) {
     throw new Error("[sql] createGood error: ", error.message);
@@ -125,7 +121,7 @@ exports.createFollow = async (id, userUid) => {
     from users 
     where uid = ?
     `;
-    const selectUserResult = await pool.query(selectUser, [id]);
+    const [[selectUserResult]] = await pool.query(selectUser, [id]);
     if (!selectUserResult) {
       return null;
     }
@@ -133,8 +129,8 @@ exports.createFollow = async (id, userUid) => {
     const sql = `
     insert into follows values(?, ?)
     `;
-    const [[result]] = await pool.query(sql, [id, userUid]);
-    return result;
+    const [result] = await pool.query(sql, [id, userUid]);
+    return result.insertId;
   } catch (error) {
     throw new Error("[sql] createFollow error: ", error.message);
   }
@@ -147,7 +143,7 @@ exports.deleteFollow = async (id, userUid) => {
     from users 
     where uid = ?
     `;
-    const selectUserResult = await pool.query(selectUser, [id]);
+    const [[selectUserResult]] = await pool.query(selectUser, [id]);
     if (!selectUserResult) {
       return null;
     }
@@ -156,7 +152,7 @@ exports.deleteFollow = async (id, userUid) => {
       delete from follows 
       where followed_user_uid = ? and following_user_uid = ?
       `;
-    const [[result]] = await pool.query(sql, [id, userUid]);
+    const result = await pool.query(sql, [id, userUid]);
     return result;
   } catch (error) {
     throw new Error("[sql] deleteFollow error: ", error.message);
