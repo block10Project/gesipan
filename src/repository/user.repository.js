@@ -165,7 +165,6 @@ exports.selectUserBoards = async (id) => {
       having board_user_uid = ?
       `;
     const [[result]] = await pool.query(sql, [id]);
-    console.log("user.repository: ", result);
     return result;
   } catch (error) {
     throw new Error("[sql] selectUserFollowers error: ", error.message);
