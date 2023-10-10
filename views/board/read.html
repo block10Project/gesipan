@@ -12,7 +12,25 @@
 <body>
 
 <header>
-    <button type="button" class="button-black-m board-list-button" onclick="location.href = '/'">글 목록</button>
+    {% if user.uid !== board.board_user_uid %}
+    {% if user.is_good %}
+    <button type="button" class="button-red-heart">❤️</button>
+    {% else %}
+    <button type="button" class="button-white-heart" onclick="location.href = '/boards/good?id={{board.uid}}'">🤍
+    </button>
+    {% endif %}
+    {% if user.is_following %}
+    <button type="button" class="button-black-m"
+            onclick="location.href = '/boards/unfollowing?id={{board.board_user_uid}}'">언 팔로잉
+    </button>
+    {% else %}
+    <button type="button" class="button-black-m"
+            onclick="location.href = '/boards/following?id={{board.board_user_uid}}'">팔로잉
+    </button>
+    {% endif %}
+
+    {% endif %}
+    <button type="button" class="button-black-m" onclick="location.href = '/'">글 목록</button>
 </header>
 
 <main>
@@ -30,6 +48,13 @@
 
         </div>
     </div>
+
+    {% if user.uid === board.board_user_uid %}
+    <div class="board-buttons">
+        <button class="button-black-m" onclick="location.href = '/boards/modify'">수정</button>
+        <button class="button-black-m" onclick="location.href = '/boards/delete'">삭제</button>
+    </div>
+    {% endif %}
 
     <div class="comment-container">
         {% for comment in comments %}
