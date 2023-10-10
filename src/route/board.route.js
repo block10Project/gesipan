@@ -9,6 +9,8 @@ router.get("/read", boardController.getRead);
 
 router.get("/good", boardController.getGood);
 
+router.get("/notgood", boardController.getNotGood);
+
 router.get("/following", boardController.getFollowing);
 
 router.get("/unfollowing", boardController.getUnfollowing);

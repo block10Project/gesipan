@@ -94,23 +94,46 @@ exports.selectComments = async (id) => {
 
 exports.createGood = async (id, userUid) => {
   try {
-    const selectGood = `
+    const selectUser = `
     select * 
-    from goods 
-    where board_uid = ? and good_user_uid = ?
+    from users 
+    where uid = ?
     `;
-    const [[goodResult]] = await pool.query(selectGood, [id, userUid]);
-    if (goodResult) {
-      return goodResult;
+    const [[selectUserResult]] = await pool.query(selectUser, [id, userUid]);
+    if (!selectUserResult) {
+      return null;
     }
 
     const sql = `
     insert into goods values(?, ?)
     `;
-    const result = await pool.query(sql, [id, userUid]);
-    return null;
+    const [result] = await pool.query(sql, [id, userUid]);
+    return result;
   } catch (error) {
     throw new Error("[sql] createGood error: ", error.message);
+  }
+};
+
+exports.deleteGood = async (id, userUid) => {
+  try {
+    const selectUser = `
+    select * 
+    from users 
+    where uid = ?
+    `;
+    const [[selectUserResult]] = await pool.query(selectUser, [id, userUid]);
+    if (!selectUserResult) {
+      return null;
+    }
+
+    const sql = `
+    delete from goods 
+    where board_uid = ? and good_user_uid = ?
+    `;
+    const [result] = await pool.query(sql, [id, userUid]);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] deleteGood error: ", error.message);
   }
 };
 

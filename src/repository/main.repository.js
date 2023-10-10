@@ -14,6 +14,19 @@ exports.selectUserUid = async (id) => {
   }
 };
 
+exports.selectPages = async () => {
+  try {
+    const sql = `
+    select * 
+    from boards 
+    `;
+    const [result] = await pool.query(sql, []);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] selectPages error: ", error.message);
+  }
+};
+
 exports.selectBoards = async (id) => {
   try {
     const sql = `
