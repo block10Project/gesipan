@@ -11,14 +11,46 @@
 </head>
 <body>
 
-<div class="board-container">
-    <div class="board-wrapper">
-        <button type="button" class="button-black-m board-list-button" onclick="location.href = '/'">글 목록</button>
+<header>
+    <button type="button" class="button-black-m board-list-button" onclick="location.href = '/'">글 목록</button>
+</header>
 
-        <div class="board-title">{{board.title}}</div>
-        <div class="board-content">{{board.content}}</div>
+<main>
+    <div class="board-container">
+        <div class="board-wrapper">
+
+            <div class="board-header">
+                <div class="board-title">{{board.title}}</div>
+                <div class="board-nickname">{{board.nickname}}</div>
+                <div class="board-created-at">{{board.created_at}}</div>
+                <div class="board-views">{{board.views}}</div>
+                <div class="board-goods">{{board.goods}}</div>
+            </div>
+            <div class="board-content">{{board.content}}</div>
+
+        </div>
     </div>
-</div>
+
+    <div class="comment-container">
+        {% for comment in comments %}
+        <div class="comment-wrapper">
+            <div>{{comment.nickname}}</div>
+            <div>{{comment.comment}}</div>
+            <div>{{comment.created_at}}</div>
+        </div>
+        {% endfor %}
+
+        <div class="comment-input-wrapper">
+            <form method="post" action="/boards/comment?id={{board.uid}}">
+                <input class="input-comment" type="text" name="comment" placeholder="댓글 작성하기">
+                <button type="submit" class="button-black-m">완료</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+
+<footer></footer>
 
 
 </body>

@@ -43,22 +43,20 @@ header {
     height: 48px;
     border-radius: 5px;
     cursor: pointer;
-    
+
 }
 
 .button-black-m:hover {
     background-color: #403535;
 }
 
-/*image slider*/
-.main-image-slider {
-
-    width: 30%;
-    height: 500px;
-    margin: auto;
-    overflow: hidden;
+.button-black-l:hover {
+    background-color: #403535;
 }
 
+.button-black-xl:hover {
+    background-color: #403535;
+}
 
 /*table*/
 .main-table {
