@@ -11,5 +11,6 @@
         </button>
         <button class="button-black-m" onclick="location.href = '/users/logout'">로그아웃</button>
     </div>
-    <button class="button-black-xl">작성글 목록({{user.boards}})</button>
+    <button class="button-black-xl" onclick="location.href='/users/list?id={{user.uid}}'">작성글 목록({{user.boards}})
+    </button>
 </div>
