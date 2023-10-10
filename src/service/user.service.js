@@ -128,8 +128,14 @@ exports.selectBoards = async (id) => {
   try {
     const result = await userRepository.selectBoards(id);
     for (let i = 0; i < result.length; i++) {
-      result[i].created_at = result[i].created_at.toString();
-      // result[i].goods = await mainRepository.selectBoardGoods(result[i].uid);
+      let getValues = await userRepository.selectBoardGoods(result[i].uid);
+      result[i].goods = getValues ? getValues.goods : 0;
+      getValues = await userRepository.selectBoardComments(result[i].uid);
+      result[i].comments = getValues ? getValues.comments : 0;
+      getValues = await userRepository.selectUserNickname(
+        result[i].board_user_uid
+      );
+      result[i].nickname = getValues ? getValues.nickname : "익명";
     }
     return { result: result };
   } catch (error) {
