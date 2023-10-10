@@ -1,9 +1,3 @@
-if (location.href.split("?")[1] !== undefined) {
-  const url = location.href.split("?")[1].split("=")[1];
-  alert(decodeURI(url));
-  history.pushState(null, null, "/");
-}
-
 const makeModal = (method, url, elementName) => {
   const name = elementName;
 

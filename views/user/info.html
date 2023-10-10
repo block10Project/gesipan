@@ -3,8 +3,12 @@
     <div>{{user.nickname}}</div>
     <div>{{user.id}}</div>
     <div>
-        <button class="button-black-m" onclick="location.href = '/users/following'">팔로잉({{user.followings}})</button>
-        <button class="button-black-m" onclick="location.href = '/users/follower'">팔로워({{user.followers}})</button>
+        <button class="button-black-m" onclick="location.href = '/users/following?id={{user.uid}}'">
+            팔로잉({{user.followings}})
+        </button>
+        <button class="button-black-m" onclick="location.href = '/users/follower?id={{user.uid}}'">
+            팔로워({{user.followers}})
+        </button>
         <button class="button-black-m" onclick="location.href = '/users/logout'">로그아웃</button>
     </div>
     <button class="button-black-xl">작성글 목록({{user.boards}})</button>
