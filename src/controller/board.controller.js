@@ -141,12 +141,12 @@ exports.getUnfollowing = async (req, res, next) => {
     const userUid = await mainService.selectUserUid(req);
     if (userUid.result) {
       const result = await boardService.deleteFollow(
-        req.query.id,
+        req.query.user_uid,
         userUid.result.uid
       );
       if (result.result) {
         return res.redirect(
-          `/boards/read?id=${req.query.id}&message=${result.message}`
+          `/boards/read?id=${req.query.board_uid}&message=${result.message}`
         );
       }
       return res.redirect(`/?message=${result.message}`);
