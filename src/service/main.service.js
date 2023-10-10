@@ -40,6 +40,12 @@ exports.selectBoards = async (req) => {
           result[i].board_user_uid
         );
         result[i].nickname = getValues ? getValues.nickname : "익명";
+        result[i].date = result[i].created_at.toISOString().split("T")[0];
+        result[i].time = [
+          result[i].created_at.toISOString().split("T")[1].split(":")[0],
+          result[i].created_at.toISOString().split("T")[1].split(":")[1],
+        ].join(":");
+        result[i].created_at = [result[i].date, result[i].time].join(" ");
       }
 
       return { result: result };
@@ -54,6 +60,12 @@ exports.selectBoards = async (req) => {
         result[i].board_user_uid
       );
       result[i].nickname = getValues ? getValues.nickname : "익명";
+      result[i].date = result[i].created_at.toISOString().split("T")[0];
+      result[i].time = [
+        result[i].created_at.toISOString().split("T")[1].split(":")[0],
+        result[i].created_at.toISOString().split("T")[1].split(":")[1],
+      ].join(":");
+      result[i].created_at = [result[i].date, result[i].time].join(" ");
     }
     return { result: result };
   } catch (error) {

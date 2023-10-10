@@ -25,6 +25,13 @@ exports.selectBoard = async (id) => {
     result.goods = getValues ? getValues.goods : 0;
     getValues = await boardRepository.selectUserNickname(result.board_user_uid);
     result.nickname = getValues ? getValues.nickname : "익명";
+    result.date = result.created_at.toISOString().split("T")[0];
+    result.time = [
+      result.created_at.toISOString().split("T")[1].split(":")[0],
+      result.created_at.toISOString().split("T")[1].split(":")[1],
+    ].join(":");
+    result.created_at = [result.date, result.time].join(" ");
+    console.log(result.date, result.time);
     return { result: result };
   } catch (error) {
     throw new Error("selectBoard error: ", error.message);
