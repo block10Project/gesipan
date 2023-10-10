@@ -14,19 +14,22 @@
 <header>
     {% if user.uid !== board.board_user_uid %}
     {% if user.is_good %}
-    <button type="button" class="button-red-heart" onclick="location.href = '/boards/notgood?id={{board.uid}}'">❤️
+    <button type="button" class="button-red-heart"
+            onclick="location.href = '/boards/notgood?id={{board.board_user_uid}}'">❤️
     </button>
     {% else %}
-    <button type="button" class="button-white-heart" onclick="location.href = '/boards/good?id={{board.uid}}'">🤍
+    <button type="button" class="button-white-heart"
+            onclick="location.href = '/boards/good?id={{board.board_user_uid}}'">🤍
     </button>
     {% endif %}
     {% if user.is_following %}
     <button type="button" class="button-black-m"
-            onclick="location.href = '/boards/unfollowing?id={{board.board_user_uid}}'">언 팔로잉
+            onclick="location.href = '/boards/unfollowing?board_uid={{board.uid}}&user_uid={{board.board_user_uid}}'">언
+        팔로잉
     </button>
     {% else %}
     <button type="button" class="button-black-m"
-            onclick="location.href = '/boards/following?id={{board.board_user_uid}}'">팔로잉
+            onclick="location.href = '/boards/following?board_uid={{board.uid}}&user_uid={{board.board_user_uid}}'">팔로잉
     </button>
     {% endif %}
 
@@ -52,8 +55,8 @@
 
     {% if user.uid === board.board_user_uid %}
     <div class="board-buttons">
-        <button class="button-black-m" onclick="location.href = '/boards/modify'">수정</button>
-        <button class="button-black-m" onclick="location.href = '/boards/delete'">삭제</button>
+        <button class="button-black-m" onclick="location.href = '/boards/modify?id={{board.uid}}'">수정</button>
+        <button class="button-black-m" onclick="location.href = '/boards/delete?id={{board.uid}}'">삭제</button>
     </div>
     {% endif %}
 
