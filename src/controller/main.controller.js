@@ -29,12 +29,14 @@ exports.postSearch = (req, res, next) => {
 exports.getSearch = async (req, res, next) => {
   try {
     const result = await mainService.selectBoards(req);
+    const pagesResult = await mainService.selectPages(req);
     if (result.message) {
       return res.redirect(`/?message=${result.message}`);
     }
     res.render("search.html", {
       keyword: req.query.keyword,
       boards: result.result,
+      pages: pagesResult.result,
     });
   } catch (error) {
     next(error);
