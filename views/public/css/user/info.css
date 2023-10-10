@@ -9,3 +9,8 @@
 
 
 }
+
+.info-modal-element > div:nth-child(1), .info-modal-element > div:nth-child(2) {
+    align-self: start;
+    margin-left: 26px;
+}
