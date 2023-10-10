@@ -33,7 +33,10 @@ exports.selectBoards = async (req) => {
 
       for (let i = 0; i < result.length; i++) {
         result[i].created_at = result[i].created_at.toString();
-        // result[i].goods = await mainRepository.selectBoardGoods(result[i].uid);
+        result[i].goods = await mainRepository.selectBoardGoods(result[i].uid);
+        result[i].comments = await mainRepository.selectBoardComments(
+          result[i].uid
+        );
       }
 
       return { result: result };
@@ -41,7 +44,10 @@ exports.selectBoards = async (req) => {
     const result = await mainRepository.selectBoards(req.query.id);
     for (let i = 0; i < result.length; i++) {
       result[i].created_at = result[i].created_at.toString();
-      // result[i].goods = await mainRepository.selectBoardGoods(result[i].uid);
+      result[i].goods = await mainRepository.selectBoardGoods(result[i].uid);
+      result[i].comments = await mainRepository.selectBoardComments(
+        result[i].uid
+      );
     }
     return { result: result };
   } catch (error) {
