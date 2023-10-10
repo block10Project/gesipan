@@ -1,4 +1,5 @@
 const getInfo = (uid) => {
+  console.log(uid);
   makeModal("get", `/users/info?id=${uid}`, "infoModalElement");
 
   setTimeout(() => {

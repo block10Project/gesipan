@@ -1,0 +1,36 @@
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 64px 50px 0px 50px;
+}
+
+.board-list-title {
+    display: flex;
+    gap: 10px;
+    font-size: 23px;
+    justify-content: space-between;
+    background-color: #afadad;
+    border-radius: 8px;
+}
+
+.board-list-content {
+    background-color: #e1dede;
+    font-size: 21px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    border-radius: 8px;
+
+}
+
+.board-list-title div, .board-list-content div {
+    width: 150px;
+}
