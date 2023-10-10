@@ -95,7 +95,8 @@ exports.selectComments = async (id) => {
   try {
     const result = await boardRepository.selectComments(id);
     for (let i = 0; i < result.length; i++) {
-      result[i].date = result.created_at.toISOString().split("T")[0];
+      console.log(result[i]);
+      result[i].date = result[i].created_at.toISOString().split("T")[0];
       result[i].time = [
         result[i].created_at.toISOString().split("T")[1].split(":")[0],
         result[i].created_at.toISOString().split("T")[1].split(":")[1],
