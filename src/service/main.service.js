@@ -110,7 +110,7 @@ exports.selectPages = async (req) => {
       }
       pages.push(i);
     }
-    return { current_page: req.query.id, pagination: pages };
+    return { result: { current_page: req.query.id, pagination: pages } };
   } catch (error) {
     throw new Error("selectBoards error: ", error.message);
   }
