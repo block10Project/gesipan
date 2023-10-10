@@ -66,7 +66,7 @@ exports.deleteBoard = async (id, userUid) => {
       return { message: "잘못된 접근입니다." };
     }
     const result = await boardRepository.deleteBoard(id);
-    if (!result) {
+    if (result) {
       return { message: "삭제했습니다." };
     }
     return { message: "삭제에 실패했습니다." };

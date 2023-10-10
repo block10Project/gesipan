@@ -163,9 +163,7 @@ exports.getModify = async (req, res, next) => {
     }
     res.render("board/modify.html", {
       message: req.query.message,
-      board: {
-        uid: req.query.id,
-      },
+      board: result.result,
     });
   } catch (error) {
     next(error);

@@ -61,7 +61,7 @@ exports.deleteBoard = async (id) => {
     const sql = `
     delete from boards where uid = ?
     `;
-    const result = await pool.query(sql, [id]);
+    const [result] = await pool.query(sql, [id]);
     return result;
   } catch (error) {
     throw new Error("[sql] deleteBoard error: ", error.message);

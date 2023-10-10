@@ -33,7 +33,7 @@ exports.selectBoards = async (id) => {
     const sql = `
     select * 
     from boards 
-    order by uid limit ?, 10
+    order by created_at desc, uid limit ?, 10
     `;
     const [result] = await pool.query(sql, [(id - 1) * 10]);
     return result;
@@ -48,7 +48,7 @@ exports.selectBoardsWhereKeyword = async (keyword, id) => {
     select * 
     from boards 
     where title like ? 
-    order by uid limit ?, 10
+    order by created_at desc, uid limit ?, 10
     `;
     const [[result]] = await pool.query(sql, [`%${keyword}%`, (id - 1) * 10]);
     return result;
