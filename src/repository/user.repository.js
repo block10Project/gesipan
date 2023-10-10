@@ -129,7 +129,7 @@ exports.selectBoards = async (id) => {
 exports.selectUserFollowings = async (id) => {
   try {
     const sql = `
-    select count(followed_user_uid) 
+    select count(followed_user_uid) as followings
     from follows 
     group by following_user_uid 
     having following_user_uid = ?
@@ -144,7 +144,7 @@ exports.selectUserFollowings = async (id) => {
 exports.selectUserFollowers = async (id) => {
   try {
     const sql = `
-      select count(following_user_uid) 
+      select count(following_user_uid) as followers
       from follows 
       group by followed_user_uid 
       having followed_user_uid = ?
@@ -159,12 +159,13 @@ exports.selectUserFollowers = async (id) => {
 exports.selectUserBoards = async (id) => {
   try {
     const sql = `
-      select count(uid) 
+      select count(uid) as boards 
       from boards 
       group by board_user_uid 
       having board_user_uid = ?
       `;
     const [[result]] = await pool.query(sql, [id]);
+    console.log("user.repository: ", result);
     return result;
   } catch (error) {
     throw new Error("[sql] selectUserFollowers error: ", error.message);
@@ -174,7 +175,7 @@ exports.selectUserBoards = async (id) => {
 exports.selectUserComments = async (id) => {
   try {
     const sql = `
-      select count(comment) 
+      select count(comment) as comments
       from comments 
       group by comment_user_uid 
       having comment_user_uid = ?

@@ -50,10 +50,14 @@ exports.selectUser = async (id) => {
         return { message: "존재하지 않는 계정입니다." };
       }
       if (result) {
-        result.followings = await userRepository.selectUserFollowings(id);
-        result.followers = await userRepository.selectUserFollowers(id);
-        result.boards = await userRepository.selectUserBoards(id);
-        result.comments = await userRepository.selectUserComments(id);
+        result.followings = {
+          ...(await userRepository.selectUserFollowings(id)),
+        };
+        result.followers = {
+          ...(await userRepository.selectUserFollowers(id)),
+        };
+        result.boards = { ...(await userRepository.selectUserBoards(id)) };
+        result.comments = { ...(await userRepository.selectUserComments(id)) };
       }
       return { result: result };
     }
