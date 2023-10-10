@@ -116,9 +116,6 @@ exports.createGood = async (id, userUid) => {
       return { message: "존재하지 않는 글입니다." };
     }
     const result = await boardRepository.createGood(id, userUid);
-    if (!result) {
-      return { message: "존재하지 않는 글입니다." };
-    }
     return { message: "추천했습니다." };
   } catch (error) {
     throw new Error("createGood error: ", error.message);
@@ -132,9 +129,6 @@ exports.deleteGood = async (id, userUid) => {
       return { message: "존재하지 않는 글입니다." };
     }
     const result = await boardRepository.deleteGood(id, userUid);
-    if (!result) {
-      return { message: "존재하지 않는 글입니다." };
-    }
     return { message: "추천을 취소했습니다." };
   } catch (error) {
     throw new Error("deleteGood error: ", error.message);
