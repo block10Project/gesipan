@@ -41,15 +41,15 @@ exports.getRead = async (req, res, next) => {
     }
     const commentsResult = await boardService.selectComments(req.query.id);
 
-    const userIsGood = await boardService.selectGoodUser(
-      boardResult.result.uid,
-      userUid.result.uid
-    );
-    const userIsFollowing = await boardService.selectFollowingUser(
-      boardResult.result.board_user_uid,
-      userUid.result.uid
-    );
     if (userUid.result) {
+      const userIsGood = await boardService.selectGoodUser(
+        boardResult.result.uid,
+        userUid.result.uid
+      );
+      const userIsFollowing = await boardService.selectFollowingUser(
+        boardResult.result.board_user_uid,
+        userUid.result.uid
+      );
       res.render("board/read.html", {
         user: {
           uid: userUid.result.uid,
