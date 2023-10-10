@@ -21,6 +21,10 @@ exports.selectBoard = async (id) => {
     if (!result) {
       return { message: "존재하지 않는 글입니다." };
     }
+    let getValues = await boardRepository.selectBoardGoods(result.uid);
+    result.goods = getValues ? getValues.goods : 0;
+    getValues = await boardRepository.selectUserNickname(result.board_user_uid);
+    result.nickname = getValues ? getValues.nickname : "익명";
     return { result: result };
   } catch (error) {
     throw new Error("selectBoard error: ", error.message);

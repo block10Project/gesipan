@@ -186,3 +186,32 @@ exports.selectFollowingUser = async (board_user_uid, user_uid) => {
     throw new Error("[sql] selectFollowingUser error: ", error.message);
   }
 };
+
+exports.selectBoardGoods = async (id) => {
+  try {
+    const sql = `
+    select count(*) 
+    from goods 
+    group by board_uid 
+    having board_uid = ?
+    `;
+    const [[result]] = await pool.query(sql, [id]);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] selectBoardGoods: ", error.message);
+  }
+};
+
+exports.selectUserNickname = async (id) => {
+  try {
+    const sql = `
+    select nickname 
+    from users 
+    where uid = ?
+    `;
+    const [[result]] = await pool.query(sql, [id]);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] selectUserNickname: ", error.message);
+  }
+};
