@@ -141,6 +141,7 @@ exports.selectBoards = async (id) => {
         result[i].created_at.toISOString().split("T")[1].split(":")[0],
         result[i].created_at.toISOString().split("T")[1].split(":")[1],
       ].join(":");
+      result[i].created_at = [result[i].date, result[i].time].join(" ");
     }
     return { result: result };
   } catch (error) {

@@ -30,6 +30,7 @@ exports.selectBoard = async (id) => {
       result.created_at.toISOString().split("T")[1].split(":")[0],
       result.created_at.toISOString().split("T")[1].split(":")[1],
     ].join(":");
+    result.created_at = [result.date, result.time].join(" ");
     console.log(result.date, result.time);
     return { result: result };
   } catch (error) {
