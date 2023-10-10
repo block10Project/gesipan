@@ -30,9 +30,19 @@ exports.selectBoards = async (req) => {
       if (!result) {
         return { message: "검색 결과가 없습니다." };
       }
+
+      for (let i = 0; i < result.length; i++) {
+        result[i].created_at = result[i].created_at.toString();
+        // result[i].goods = await mainRepository.selectBoardGoods(result[i].uid);
+      }
+
       return { result: result };
     }
     const result = await mainRepository.selectBoards(req.query.id);
+    for (let i = 0; i < result.length; i++) {
+      result[i].created_at = result[i].created_at.toString();
+      // result[i].goods = await mainRepository.selectBoardGoods(result[i].uid);
+    }
     return { result: result };
   } catch (error) {
     throw new Error("selectBoards error: ", error.message);
