@@ -34,12 +34,16 @@ exports.postWrite = async (req, res, next) => {
 
 exports.getRead = async (req, res, next) => {
   try {
+    const userUid = await mainService.selectUserUid(req);
     const boardResult = await boardService.selectBoard(req.query.id);
     if (boardResult.message) {
       return res.redirect(`/?message=${boardResult.message}`);
     }
     const commentsResult = await boardService.selectComments(req.query.id);
     res.render("board/read.html", {
+      user: {
+        uid: userUid.result.uid,
+      },
       message: req.query.message,
       board: boardResult.result,
       comments: commentsResult.result,
