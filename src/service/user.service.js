@@ -29,12 +29,14 @@ exports.selectUserWhereId = async (id) => {
         return { message: "존재하지 않는 계정입니다." };
       }
       if (result) {
-        result.followings = await userRepository.selectUserFollowings(id)
-          .followings;
-        result.followers = await userRepository.selectUserFollowers(id)
-          .followers;
-        result.boards = await userRepository.selectUserBoards(id).boards;
-        result.comments = await userRepository.selectUserComments(id).comments;
+        let getValues = await userRepository.selectUserFollowings(id);
+        result.followings = getValues ? getValues.followings : 0;
+        getValues = await userRepository.selectUserFollowers(id);
+        result.followers = getValues ? getValues.followers : 0;
+        getValues = await userRepository.selectUserBoards(id);
+        result.boards = getValues ? getValues.boards : 0;
+        getValues = await userRepository.selectUserComments(id);
+        result.comments = getValues ? getValues.comments : 0;
       }
       return { result: result };
     }
