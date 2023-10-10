@@ -193,7 +193,7 @@ exports.selectFollowingUser = async (board_user_uid, user_uid) => {
 exports.selectBoardGoods = async (id) => {
   try {
     const sql = `
-    select count(*) 
+    select count(good_user_uid) as goods 
     from goods 
     group by board_uid 
     having board_uid = ?
