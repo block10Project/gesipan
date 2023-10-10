@@ -4,7 +4,7 @@ exports.getList = async (req, res, next) => {
   try {
     const uidResult = await mainService.selectUserUid(req);
     const boardsResult = await mainService.selectBoards(req);
-    // const pagesResult = await mainService.selectPages(req);
+    const pagesResult = await mainService.selectPages(req);
 
     res.render("index.html", {
       message: req.query.message,
@@ -12,7 +12,7 @@ exports.getList = async (req, res, next) => {
         uid: uidResult.result ? uidResult.result.uid : null,
       },
       boards: boardsResult.result,
-      // pages: pagesResult.result,
+      pages: pagesResult.result,
     });
   } catch (error) {
     next(error);
@@ -29,12 +29,14 @@ exports.postSearch = (req, res, next) => {
 exports.getSearch = async (req, res, next) => {
   try {
     const result = await mainService.selectBoards(req);
+    const pagesResult = await mainService.selectPages(req);
     if (result.message) {
       return res.redirect(`/?message=${result.message}`);
     }
     res.render("search.html", {
       keyword: req.query.keyword,
       boards: result.result,
+      pages: pagesResult.result,
     });
   } catch (error) {
     next(error);

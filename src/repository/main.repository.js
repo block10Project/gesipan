@@ -14,13 +14,14 @@ exports.selectUserUid = async (id) => {
   }
 };
 
-exports.selectPages = async () => {
+exports.selectPages = async (keyword) => {
   try {
     const sql = `
     select * 
     from boards 
+    where title like ? 
     `;
-    const [result] = await pool.query(sql, []);
+    const [result] = await pool.query(sql, [`%${keyword}%`]);
     return result;
   } catch (error) {
     throw new Error("[sql] selectPages error: ", error.message);

@@ -72,3 +72,46 @@ exports.selectBoards = async (req) => {
     throw new Error("selectBoards error: ", error.message);
   }
 };
+
+exports.selectPages = async (req) => {
+  try {
+    if (!req.query.id) {
+      req.query.id = 1;
+    } else {
+      req.query.id = Number(req.query.id);
+    }
+    if (!req.query.keyword) {
+      req.query.keyword = "";
+    }
+    const selectPagesResult = await mainRepository.selectPages(
+      req.query.keyword
+    );
+    const allPages = selectPagesResult.length / 10 + 1;
+    const pages = [];
+    let count = 0;
+    for (let i = 1; i <= allPages; i++) {
+      if (req.query.id <= 3) {
+        count++;
+        pages.push(i);
+        if (count === 5) {
+          break;
+        }
+        continue;
+      }
+      if (req.query.id <= allPages - 2) {
+        if (i >= req.query.id - 2) {
+          count++;
+          pages.push(i);
+        }
+        if (count === 5) {
+          break;
+        }
+        continue;
+      }
+      pages.push(i);
+    }
+    return { current_page: req.query.id, pagination: pages };
+  } catch (error) {
+    throw new Error("selectBoards error: ", error.message);
+  }
+};
