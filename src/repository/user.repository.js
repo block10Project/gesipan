@@ -215,3 +215,17 @@ exports.selectBoardComments = async (id) => {
     throw new Error("[sql] selectBoardComments: ", error.message);
   }
 };
+
+exports.selectUserNickname = async (id) => {
+  try {
+    const sql = `
+    select nickname 
+    from users 
+    where uid = ?
+    `;
+    const [[result]] = await pool.query(sql, [id]);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] selectUserNickname: ", error.message);
+  }
+};

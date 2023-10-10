@@ -46,7 +46,7 @@ exports.selectBoardsWhereKeyword = async (keyword, id) => {
 exports.selectBoardGoods = async (id) => {
   try {
     const sql = `
-    select count(*) 
+    select count(good_user_uid) as goods 
     from goods 
     group by board_uid 
     having board_uid = ?
@@ -61,7 +61,7 @@ exports.selectBoardGoods = async (id) => {
 exports.selectBoardComments = async (id) => {
   try {
     const sql = `
-    select count(*) 
+    select count(*) as comments 
     from comments 
     group by board_uid 
     having board_uid = ?
@@ -70,5 +70,19 @@ exports.selectBoardComments = async (id) => {
     return result;
   } catch (error) {
     throw new Error("[sql] selectBoardComments: ", error.message);
+  }
+};
+
+exports.selectUserNickname = async (id) => {
+  try {
+    const sql = `
+    select nickname 
+    from users 
+    where uid = ?
+    `;
+    const [[result]] = await pool.query(sql, [id]);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] selectUserNickname: ", error.message);
   }
 };
