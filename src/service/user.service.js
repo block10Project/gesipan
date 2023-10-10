@@ -74,7 +74,8 @@ exports.createUser = async (nickname, id, pw) => {
     if (!pw) {
       return { message: "비밀번호를 입력해주세요" };
     }
-    const checkUser = await userRepository.selectUser(id);
+    const checkUser = await userRepository.selectUserWhereId(id);
+    console.log("user.service: ", checkUser);
     if (checkUser) {
       return { message: "이미 존재하는 아이디입니다." };
     }
