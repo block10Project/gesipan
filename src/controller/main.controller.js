@@ -8,7 +8,7 @@ exports.getList = async (req, res, next) => {
     res.render("index.html", {
       message: req.query.message,
       user: {
-        uid: uidResult.result.uid,
+        uid: uidResult.result ? uidResult.result.uid : null,
       },
       boards: boardsResult.result,
     });
