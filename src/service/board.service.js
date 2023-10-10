@@ -31,7 +31,6 @@ exports.selectBoard = async (id) => {
       result.created_at.toISOString().split("T")[1].split(":")[1],
     ].join(":");
     result.created_at = [result.date, result.time].join(" ");
-    console.log(result.date, result.time);
     return { result: result };
   } catch (error) {
     throw new Error("selectBoard error: ", error.message);
@@ -95,7 +94,6 @@ exports.selectComments = async (id) => {
   try {
     const result = await boardRepository.selectComments(id);
     for (let i = 0; i < result.length; i++) {
-      console.log(result[i]);
       result[i].date = result[i].created_at.toISOString().split("T")[0];
       result[i].time = [
         result[i].created_at.toISOString().split("T")[1].split(":")[0],
