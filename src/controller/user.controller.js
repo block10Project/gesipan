@@ -127,6 +127,9 @@ exports.getList = async (req, res, next) => {
   try {
     const result = await userService.selectBoards(req.query.id);
     res.render("user/list.html", {
+      user: {
+        uid: req.query.id,
+      },
       boards: result.result,
     });
   } catch (error) {
