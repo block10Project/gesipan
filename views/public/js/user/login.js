@@ -42,9 +42,12 @@ const addSubmitEventListener = () => {
         withCredentials: true,
         success: function (response, status, xhr) {
           const message = response.split("\n")[0];
-          if (message == "<!DOCTYPE html>") return (location.href = "/");
 
-          alert(message);
+          if (message == "<!DOCTYPE html>") {
+            location.href = "/";
+          } else {
+            alert(message);
+          }
         },
         error: function (error) {},
       });

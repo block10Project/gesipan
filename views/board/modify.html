@@ -11,8 +11,8 @@
 <body>
 <div class="form-container">
     <form class="form-wrapper" method="post" action="/boards/modify?id={{board.uid}}">
-        <input class="form-title" placeholder="글 제목" name="title">
-        <textarea class="form-content" placeholder="글 내용" name="content"></textarea>
+        <input class="form-title" placeholder="글 제목" name="title" value="{{board.title}}">
+        <textarea class="form-content" placeholder="글 내용" name="content">{{board.content}}</textarea>
         <button type="submit" class="button-black-l board-write-button">글 수정 완료</button>
     </form>
 </div>

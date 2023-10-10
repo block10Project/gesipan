@@ -114,7 +114,7 @@ header {
 }
 
 
-.button-red-heart, button-white-heart {
+.button-red-heart, .button-white-heart {
     width: 60px;
     height: 60px;
     font-size: 30px;

@@ -65,6 +65,17 @@
 </main>
 
 <footer>
+
+    <div class="pagination">
+    {% for page in pages.pagination %}
+        {% if pages.current_page == page %}
+        <a class="pagination-selected" href="/?id={{page}}">{{page}}</a>
+        {% else %}
+        <a href="/?id={{page}}">{{page}}</a>
+        {% endif %}
+    {% endfor %}
+    </div>
+
     {% if user.uid %}
     <button class="button-black-m" onclick="location = '/boards/write'">글작성</button>
     {% else %}

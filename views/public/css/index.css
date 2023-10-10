@@ -88,3 +88,19 @@ footer {
     display: flex;
     justify-content: right;
 }
+
+/*pagination*/
+.pagination {
+    margin: auto;
+}
+
+.pagination a {
+    font-size: 30px;
+    text-decoration: none;
+    color: black;
+}
+
+.pagination-selected {
+    font-size: 40px !important;
+    color: blue !important;
+}
