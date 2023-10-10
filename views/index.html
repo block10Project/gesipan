@@ -16,6 +16,12 @@
     <script defer src="/js/user/login.js"></script>
     <script defer src="/js/user/register.js"></script>
     <script defer src="/js/user/info.js"></script>
+
+    <script>
+        {% if message %}
+        alert({{message}})
+        {% endif %}
+    </script>
 </head>
 
 
@@ -49,7 +55,7 @@
         {% for board in boards %}
         <tr>
             <td>{{board.uid}}</td>
-            <td>{{board.title}}({{board.comments}})</td>
+            <td><a href="/boards/read?id={{board.uid}}">{{board.title}}({{board.comments}})</a></td>
             <td>{{board.nickname}}</td>
             <td>{{board.views}}</td>
             <td>{{board.goods}}</td>

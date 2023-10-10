@@ -1,0 +1,19 @@
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+main {
+    display: flex;
+    gap: 10px;
+    margin: 64px 50px 0 50px;
+}
+
+main div {
+    background-color: rgb(232, 232, 232);
+    border: none;
+    border-radius: 6px;
+    font-size: 24px;
+}
+

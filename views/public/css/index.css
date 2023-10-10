@@ -21,6 +21,7 @@ header {
     width: 116px;
     height: 48px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .button-black-l {
@@ -30,6 +31,8 @@ header {
     width: 177px;
     height: 48px;
     border-radius: 5px;
+    cursor: pointer;
+
 }
 
 .button-black-xl {
@@ -39,6 +42,8 @@ header {
     width: 311px;
     height: 48px;
     border-radius: 5px;
+    cursor: pointer;
+    
 }
 
 .button-black-m:hover {
