@@ -6,6 +6,7 @@ if (location.href.split("?")[1] !== undefined) {
 
 const makeModal = (method, url, elementName) => {
   const name = elementName;
+
   $.ajax({
     type: method,
     url: url,

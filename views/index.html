@@ -14,6 +14,7 @@
     <script defer src="/js/board/write.js"></script>
     <script defer src="/js/user/login.js"></script>
     <script defer src="/js/user/register.js"></script>
+    <script defer src="/js/user/info.js"></script>
 
 
 </head>
@@ -22,7 +23,7 @@
 <body>
 <header>
     {% if user.uid %}
-    <button class="button-black-m" onclick="getInfo()">회원정보</button>
+    <button class="button-black-m" onclick="getInfo('{{user.uid}}')">회원정보</button>
     {% else %}
     <button class="button-black-m" onclick="getLogin()">로그인</button>
     {% endif %}

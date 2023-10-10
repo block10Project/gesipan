@@ -83,10 +83,14 @@ exports.postPassword = async (req, res, next) => {
 
 exports.getInfo = async (req, res, next) => {
   try {
+    console.log(req.query.id);
     const result = await userService.selectUser(req.query.id);
+
+    console.log(result.message);
     if (result.message) {
       return res.redirect(`/?message=${result.message}`);
     }
+
     res.render("user/info.html", {
       user: result.result,
     });
