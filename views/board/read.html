@@ -15,11 +15,11 @@
     {% if user.uid !== board.board_user_uid %}
     {% if user.is_good %}
     <button type="button" class="button-red-heart"
-            onclick="location.href = '/boards/notgood?id={{board.board_user_uid}}'">❤️
+            onclick="location.href = '/boards/notgood?id={{board.uid}}'">❤️
     </button>
     {% else %}
     <button type="button" class="button-white-heart"
-            onclick="location.href = '/boards/good?id={{board.board_user_uid}}'">🤍
+            onclick="location.href = '/boards/good?id={{board.uid}}'">🤍
     </button>
     {% endif %}
     {% if user.is_following %}
