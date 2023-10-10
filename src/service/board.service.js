@@ -116,13 +116,28 @@ exports.createGood = async (id, userUid) => {
       return { message: "존재하지 않는 글입니다." };
     }
     const result = await boardRepository.createGood(id, userUid);
-    if (result) {
-      return { message: "이미 추천한 글입니다." };
-    } else {
-      return { message: "추천했습니다." };
+    if (!result) {
+      return { message: "존재하지 않는 글입니다." };
     }
+    return { message: "추천했습니다." };
   } catch (error) {
     throw new Error("createGood error: ", error.message);
+  }
+};
+
+exports.deleteGood = async (id, userUid) => {
+  try {
+    const boardResult = await boardRepository.selectBoard(id);
+    if (!boardResult) {
+      return { message: "존재하지 않는 글입니다." };
+    }
+    const result = await boardRepository.deleteGood(id, userUid);
+    if (!result) {
+      return { message: "존재하지 않는 글입니다." };
+    }
+    return { message: "추천을 취소했습니다." };
+  } catch (error) {
+    throw new Error("deleteGood error: ", error.message);
   }
 };
 
@@ -132,7 +147,7 @@ exports.createFollow = async (id, userUid) => {
     if (!followingResult) {
       return { message: "존재하지 않는 사용자입니다." };
     }
-    return { message: "팔로우했습니다." };
+    return { result: "success", message: "팔로우했습니다." };
   } catch (error) {
     throw new Error("createFollow error: ", error.message);
   }
@@ -144,7 +159,7 @@ exports.deleteFollow = async (id, userUid) => {
     if (!followingResult) {
       return { message: "존재하지 않는 사용자입니다." };
     }
-    return { message: "팔로우를 취소했습니다." };
+    return { result: "success", message: "팔로우를 취소했습니다." };
   } catch (error) {
     throw new Error("createFollow error: ", error.message);
   }

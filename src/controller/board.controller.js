@@ -80,11 +80,34 @@ exports.getRead = async (req, res, next) => {
 exports.getGood = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid(req);
-    const result = await boardService.createGood(
-      req.query.id,
-      userUid.result.uid
-    );
-    res.redirect(`/boards/read?id=${req.query.id}&message=${result.message}`);
+    if (userUid.result) {
+      const result = await boardService.createGood(
+        req.query.id,
+        userUid.result.uid
+      );
+      return res.redirect(
+        `/boards/read?id=${req.query.id}&message=${result.message}`
+      );
+    }
+    return res.redirect(`/?message=${userUid.message}`);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getNotGood = async (req, res, next) => {
+  try {
+    const userUid = await mainService.selectUserUid(req);
+    if (userUid.result) {
+      const result = await boardService.deleteGood(
+        req.query.id,
+        userUid.result.uid
+      );
+      return res.redirect(
+        `/boards/read?id=${req.query.id}&message=${result.message}`
+      );
+    }
+    return res.redirect(`/?message=${userUid.message}`);
   } catch (error) {
     next(error);
   }
@@ -94,13 +117,20 @@ exports.getFollowing = async (req, res, next) => {
   try {
     if (req.query.id) {
       const userUid = await mainService.selectUserUid(req);
-      const result = await boardService.createFollow(req.query.id, userUid);
-      if (!result) {
+      if (userUid.result) {
+        const result = await boardService.createFollow(
+          req.query.id,
+          userUid.result.uid
+        );
+        if (result.result) {
+          return res.redirect(
+            `/boards/read?id=${req.query.id}&message=${result.message}`
+          );
+        }
         return res.redirect(`/?message=${result.message}`);
       }
-      res.redirect(`/boards/read?id=${req.query.id}&message=${result.result}`);
+      return res.redirect(`/?message=${userUid.message}`);
     }
-    res.redirect("/");
   } catch (error) {
     next(error);
   }
@@ -109,14 +139,19 @@ exports.getFollowing = async (req, res, next) => {
 exports.getUnfollowing = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid(req);
-    const result = await boardService.deleteFollow(
-      req.query.id,
-      userUid.result.uid
-    );
-    if (!result) {
-      return res.redirect("/?message=존재하지 않는 사용자입니다.");
+    if (userUid.result) {
+      const result = await boardService.deleteFollow(
+        req.query.id,
+        userUid.result.uid
+      );
+      if (result.result) {
+        return res.redirect(
+          `/boards/read?id=${req.query.id}&message=${result.message}`
+        );
+      }
+      return res.redirect(`/?message=${result.message}`);
     }
-    res.redirect(`/boards/read?id=${req.query.id}&message=${result}`);
+    return res.redirect(`/?message=${userUid.message}`);
   } catch (error) {
     next(error);
   }
@@ -142,14 +177,19 @@ exports.postModify = async (req, res, next) => {
   try {
     const { title, content } = req.body;
     const userUid = await mainService.selectUserUid(req);
-    const result = await boardService.updateBoard(
-      req.query.id,
-      title,
-      content,
-      userUid.result.uid
-    );
+    if (userUid.result) {
+      const result = await boardService.updateBoard(
+        req.query.id,
+        title,
+        content,
+        userUid.result.uid
+      );
 
-    res.redirect(`/boards/read?id=${req.query.id}&message=${result}`);
+      return res.redirect(
+        `/boards/read?id=${req.query.id}&message=${result.message}`
+      );
+    }
+    return res.redirect(`/?message=${userUid.message}`);
   } catch (error) {
     next(error);
   }
@@ -158,11 +198,14 @@ exports.postModify = async (req, res, next) => {
 exports.getDelete = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid(req);
-    if (userUid.message) {
-      return res.redirect(`/?message=${userUid.message}`);
+    if (userUid.result) {
+      const result = await boardService.deleteBoard(
+        req.query.id,
+        userUid.result.uid
+      );
+      return res.redirect(`/?message=${result.message}`);
     }
-    const result = await boardService.deleteBoard(req.query.id, userUid);
-    return res.redirect(`/?message=${result.message}`);
+    return res.redirect(`/?message=${userUid.message}`);
   } catch (error) {
     next(error);
   }
@@ -171,17 +214,17 @@ exports.getDelete = async (req, res, next) => {
 exports.postComment = async (req, res, next) => {
   try {
     const userUid = await mainService.selectUserUid(req);
-    if (userUid.message) {
-      return res.redirect(`/?message=${userUid.message}`);
+    if (userUid.result) {
+      const result = await boardService.createComment(
+        req.query.id,
+        userUid.result.uid,
+        req.body.comment
+      );
+      return res.redirect(
+        `/boards/read?id=${req.query.id}&message=${result.message}`
+      );
     }
-    const result = await boardService.createComment(
-      req.query.id,
-      userUid.result.uid,
-      req.body.comment
-    );
-    return res.redirect(
-      `/boards/read?id=${req.query.id}&message=${result.message}`
-    );
+    return res.redirect(`/?message=${userUid.message}`);
   } catch (error) {
     next(error);
   }
