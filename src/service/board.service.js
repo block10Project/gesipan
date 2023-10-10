@@ -94,6 +94,13 @@ exports.createComment = async (id, userUid, comment) => {
 exports.selectComments = async (id) => {
   try {
     const result = await boardRepository.selectComments(id);
+    for (let i = 0; i < result.length; i++) {
+      result[i].time = [
+        result[i].created_at.toISOString().split("T")[1].split(":")[0],
+        result[i].created_at.toISOString().split("T")[1].split(":")[1],
+      ].join(":");
+      result[i].created_at = [result[i].date, result[i].time].join(" ");
+    }
     return { result: result };
   } catch (error) {
     throw new Error("selectComments error: ", error.message);
