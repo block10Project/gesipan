@@ -53,7 +53,6 @@ exports.postRegister = async (req, res, next) => {
     }
     return res.redirect(`/users/register?message=${result.message}`);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
