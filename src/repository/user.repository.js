@@ -189,7 +189,7 @@ exports.selectUserComments = async (id) => {
 exports.selectBoardGoods = async (id) => {
   try {
     const sql = `
-    select count(*) 
+    select count(*) as goods
     from goods 
     group by board_uid 
     having board_uid = ?
@@ -204,7 +204,7 @@ exports.selectBoardGoods = async (id) => {
 exports.selectBoardComments = async (id) => {
   try {
     const sql = `
-    select count(*) 
+    select count(*) as comments
     from comments 
     group by board_uid 
     having board_uid = ?
