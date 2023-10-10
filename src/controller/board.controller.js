@@ -49,16 +49,29 @@ exports.getRead = async (req, res, next) => {
       boardResult.result.board_user_uid,
       userUid.result.uid
     );
-    res.render("board/read.html", {
-      user: {
-        uid: userUid.result.uid,
-        is_good: userIsGood.result,
-        is_following: userIsFollowing.result,
-      },
-      message: req.query.message,
-      board: boardResult.result,
-      comments: commentsResult.result,
-    });
+    if (userUid.result) {
+      res.render("board/read.html", {
+        user: {
+          uid: userUid.result.uid,
+          is_good: userIsGood.result,
+          is_following: userIsFollowing.result,
+        },
+        message: req.query.message,
+        board: boardResult.result,
+        comments: commentsResult.result,
+      });
+    } else {
+      res.render("board/read.html", {
+        user: {
+          uid: null,
+          is_good: null,
+          is_following: null,
+        },
+        message: req.query.message,
+        board: boardResult.result,
+        comments: commentsResult.result,
+      });
+    }
   } catch (error) {
     next(error);
   }
