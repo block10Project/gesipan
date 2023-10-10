@@ -34,12 +34,27 @@ exports.postWrite = async (req, res, next) => {
 
 exports.getRead = async (req, res, next) => {
   try {
+    const userUid = await mainService.selectUserUid(req);
     const boardResult = await boardService.selectBoard(req.query.id);
     if (boardResult.message) {
       return res.redirect(`/?message=${boardResult.message}`);
     }
     const commentsResult = await boardService.selectComments(req.query.id);
+
+    const userIsGood = await boardService.selectGoodUser(
+      boardResult.result.uid,
+      userUid.result.uid
+    );
+    const userIsFollowing = await boardService.selectFollowingUser(
+      boardResult.result.board_user_uid,
+      userUid.result.uid
+    );
     res.render("board/read.html", {
+      user: {
+        uid: userUid.result.uid,
+        is_good: userIsGood.result,
+        is_following: userIsFollowing.result,
+      },
       message: req.query.message,
       board: boardResult.result,
       comments: commentsResult.result,

@@ -129,3 +129,24 @@ exports.deleteFollow = async (id, userUid) => {
     throw new Error("createFollow error: ", error.message);
   }
 };
+
+exports.selectGoodUser = async (board_uid, user_uid) => {
+  try {
+    const result = await boardRepository.selectGoodUser(board_uid, user_uid);
+    return { result: result };
+  } catch (error) {
+    throw new Error("selectGoodUser error: ", error.message);
+  }
+};
+
+exports.selectFollowingUser = async (board_user_uid, user_uid) => {
+  try {
+    const result = await boardRepository.selectFollowingUser(
+      board_user_uid,
+      user_uid
+    );
+    return { result: result };
+  } catch (error) {
+    throw new Error("selectFollowingUser error: ", error.message);
+  }
+};

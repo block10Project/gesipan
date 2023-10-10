@@ -158,3 +158,31 @@ exports.deleteFollow = async (id, userUid) => {
     throw new Error("[sql] deleteFollow error: ", error.message);
   }
 };
+
+exports.selectGoodUser = async (board_uid, user_uid) => {
+  try {
+    const sql = `
+    select * 
+    from goods 
+    where board_uid = ? and good_user_uid = ?
+    `;
+    const [[result]] = await pool.query(sql, [board_uid, user_uid]);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] selectGoodUser error: ", error.message);
+  }
+};
+
+exports.selectFollowingUser = async (board_user_uid, user_uid) => {
+  try {
+    const sql = `
+    select * 
+    from follows 
+    where followed_user_uid = ? and following_user_uid = ?
+    `;
+    const [[result]] = await pool.query(sql, [board_user_uid, user_uid]);
+    return result;
+  } catch (error) {
+    throw new Error("[sql] selectFollowingUser error: ", error.message);
+  }
+};
