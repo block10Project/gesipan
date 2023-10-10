@@ -71,7 +71,7 @@ exports.deleteBoard = async (id, userUid) => {
     }
     return { message: "삭제에 실패했습니다." };
   } catch (error) {
-    throw new Error("updateBoard error: ", error.message);
+    throw new Error("deleteBoard error: ", error.message);
   }
 };
 
@@ -86,7 +86,7 @@ exports.createComment = async (id, userUid, comment) => {
     const result = await boardRepository.createComment(id, userUid, comment);
     return { result: result, message: "댓글을 작성했습니다." };
   } catch (error) {
-    throw new Error("updateBoard error: ", error.message);
+    throw new Error("createComment error: ", error.message);
   }
 };
 
