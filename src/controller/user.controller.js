@@ -99,6 +99,9 @@ exports.getFollowing = async (req, res, next) => {
   try {
     const result = await userService.selectFollowings(req.query.id);
     res.render("user/following.html", {
+      user: {
+        uid: req.query.id,
+      },
       followings: result.result,
     });
   } catch (error) {
@@ -110,6 +113,9 @@ exports.getFollower = async (req, res, next) => {
   try {
     const result = await userService.selectFollowers(req.query.id);
     res.render("user/follower.html", {
+      user: {
+        uid: req.query.id,
+      },
       followers: result.result,
     });
   } catch (error) {
