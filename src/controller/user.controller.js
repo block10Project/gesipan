@@ -19,7 +19,7 @@ exports.postLogin = async (req, res, next) => {
     }
     if (!result.isLogin) {
       return res.redirect(
-        "/users/login?message=계정 정보가 일치하지 않습니다.",
+        "/users/login?message=계정 정보가 일치하지 않습니다."
       );
     }
     res.cookie(
@@ -27,7 +27,7 @@ exports.postLogin = async (req, res, next) => {
       result.data,
       (maxAge = 600),
       (domain = "localhost"),
-      (path = "/"),
+      (path = "/")
     );
     res.redirect("/");
   } catch (error) {
@@ -49,7 +49,7 @@ exports.postRegister = async (req, res, next) => {
     const { nickname, id, pw } = req.body;
     const result = await userService.createUser(nickname, id, pw);
     if (result.result) {
-      return res.redirect(`/users/login?message=${result.message}`);
+      return res.redirect(`/?message=${result.message}`);
     }
     return res.redirect(`/users/register?message=${result.message}`);
   } catch (error) {
