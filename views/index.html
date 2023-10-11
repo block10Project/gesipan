@@ -51,9 +51,9 @@
         <tbody class="main-table-body">
 
         {% for board in boards %}
-        <tr>
+        <tr style="text-align: center">
             <td>{{board.uid}}</td>
-            <td><a href="/boards/read?id={{board.uid}}">{{board.title}}({{board.comments}})</a></td>
+            <td style="text-align: left"><a href="/boards/read?id={{board.uid}}">{{board.title}}({{board.comments}})</a></td>
             <td>{{board.nickname}}</td>
             <td>{{board.views}}</td>
             <td>{{board.goods}}</td>
