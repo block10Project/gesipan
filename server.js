@@ -15,7 +15,7 @@ app.use(express.static("views/public"));
 app.use(middleware.auth);
 app.use(router);
 
-app.listen(3000, async () => {
+app.listen(8080, async () => {
   try {
     const connection = await pool.getConnection();
     console.log("Connected to the database");
@@ -23,5 +23,5 @@ app.listen(3000, async () => {
   } catch (error) {
     throw new Error("server app.listen() error: ", error.message);
   }
-  console.log("listening on 3000");
+  console.log("listening on 8080");
 });
